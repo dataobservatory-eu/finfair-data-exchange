@@ -1,0 +1,413 @@
+---
+title: "FinFAIR: Progress Report and Data Exchange with Echoes"
+editor: visual
+
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-tools: true
+    citation-style: csl/chicago-author-date.csl
+  pdf:
+    toc: false
+    toc-depth: 3
+    citation-style: csl/chicago-author-date.csl
+
+citation:
+  type: report
+  title: "FinFAIR: Progress Report and Data Exchange with Echoes  [working paper]"
+  author:
+    - name: "Daniel Antal"
+      orcid: "0000-0001-7513-6760"
+  issued: "2026-10-27"
+
+papersize: A4
+
+bibliography: 
+   - bib/antal.bib
+   - bib/datamodels.bib
+   - bib/finnougric.bib
+   - bib/wikidata.bib
+   
+nocite: |
+  finfair_poster_eadh_2026
+---
+
+## Reprex applications
+
+The **Finno-Ugric Data Sharing Space (FUDSS)** is a governed cultural heritage data sharing environment built around four complementary applications. Each supports a different aspect of creating, maintaining, reviewing, querying, and sharing knowledge about Heritage Digital Twins[^1].
+
+[^1]: See *Federating Open Knowledge through Wikibase: The Case of The Finno-Ugric Data Sharing Space* [@fudss_2026]
+
+### MediaWiki and Wikibase
+
+We use **MediaWiki and Wikibase** as a collaborative, user-friendly knowledge management environment. Wikibase stores structured statements in a relational database (MariaDB or MySQL) and exposes them as a document-oriented knowledge graph through RDF and SPARQL interfaces.
+
+Wikibase is the software underlying Wikidata, one of the world's largest collaboratively maintained knowledge graphs. Its familiar item-and-property model allows researchers and curators to maintain semantic data without requiring detailed knowledge of RDF or ontology engineering.
+
+Our Wikibase implementation supports bounded federation with Wikidata, Wikimedia Commons, and Wikipedia, allowing locally governed knowledge to be connected to external authority records, media resources, and encyclopaedic descriptions.
+
+### Sampo-UI
+
+**Sampo-UI** is a semantic browsing framework developed at Aalto University and the University of Helsinki. It provides an established approach to exploring humanities knowledge graphs through dynamic faceted search, filtering, and visualisation.
+
+In our implementation, Sampo-UI allows users to query and investigate multimodal heritage knowledge through intuitive interfaces, including tabular views and other projections of the underlying graph.
+
+### Apache Jena Fuseki
+
+**Apache Jena Fuseki** provides our SPARQL query service and API access to the semantic knowledge graph.
+
+It serves as the query backend for our Sampo-UI application and enables authorised users and applications to access the graph programmatically through SPARQL endpoints.
+
+### Betwixt
+
+**Betwixt** is an intermediate representation framework and supporting reference application under development by Reprex. It facilitates the transformation, review, and exchange of semantic knowledge across different data structures, including knowledge graphs, relational databases, spreadsheets, tabular datasets, matrices, tensors, and vector representations.
+
+Betwixt supports bounded federation between independently governed datasets and enables researchers and curators to work with graph-based knowledge without directly manipulating RDF.
+
+For example, users can review, correct, or contribute candidate statements through familiar Excel spreadsheets or tabular HTML interfaces. These changes can be accompanied by provenance and review information before accepted propositions are incorporated into the knowledge graph.
+
+### Finno-Ugric Data Sharing Space
+
+Together, these four applications provide the operational environment of the **Finno-Ugric Data Sharing Space**.
+
+Wikibase supports collaborative knowledge maintenance; Sampo-UI supports exploration and investigation; Fuseki provides semantic query and API services; and Betwixt supports cross-format knowledge exchange, curatorial review, and governed contributions.
+
+**These applications are not themselves the Heritage Digital Twins or the underlying datasets.** They are complementary interfaces and services through which users interact with the knowledge maintained in the data sharing space. Our operational data model is designed to work effectively across these applications while supporting projection into ontology-aligned exchange representations, including HDT-O and CIDOC CRM.
+
+In this document, we refer to a few digital twins developed in the *Finno-Ugric Data Sharing Space*.
+
+The [Dēliņi farmhouse (Q7328)](https://reprexbase.eu/fu/Item:Q7328) is part of the [Dēliņi farmstead (Q5582)](https://reprexbase.eu/fu/Item:Q5582). Two historical photographs, [frontal view with well (Q7362)](https://reprexbase.eu/fu/Item:Q7362) and [oblique view (Q7363)](https://reprexbase.eu/fu/Item:Q7363), depict the farmhouse. Each photograph may have its own digital twin (`HC2`), while its digital image may also serve as a digital representation (`HC5`) of the farmhouse.
+
+```{mermaid}
+
+
+%%{init: {"theme": "base", "themeVariables": {
+  "background": "#ffffff",
+  "primaryTextColor": "#263238",
+  "lineColor": "#64748b",
+  "edgeLabelBackground": "#ffffff",
+  "clusterBkg": "#f8fafc",
+  "clusterBorder": "#cbd5e1"
+}}}%%
+
+flowchart TB
+    subgraph P["Heritage objects"]
+        direction LR
+        FS["Dēliņi farmstead"]
+        FH["Dēliņi farmhouse"]
+        PH1["Frontal photograph"]
+        PH2["Oblique photograph"]
+        FH -->|part of| FS
+        PH1 -->|depicts| FH
+        PH2 -->|depicts| FH
+    end
+
+    subgraph T["Heritage Digital Twins · HC2"]
+        direction LR
+        TFS["Farmstead · Q5582"]
+        TFH["Farmhouse · Q7328"]
+        TP1["Photograph · Q7362"]
+        TP2["Photograph · Q7363"]
+    end
+
+    subgraph R["Digital representations · HC5"]
+        direction LR
+        R1["Frontal digital image"]
+        R2["Oblique digital image"]
+    end
+
+    FS -.-> TFS
+    FH -.-> TFH
+    PH1 -.-> TP1
+    PH2 -.-> TP2
+
+    PH1 -.-> R1
+    PH2 -.-> R2
+    R1 -->|represents| FH
+    R2 -->|represents| FH
+
+    classDef physical fill:#f1f5f9,stroke:#64748b,color:#1e293b
+    classDef twin fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef representation fill:#dcfce7,stroke:#16a34a,color:#14532d
+
+    class FS,FH,PH1,PH2 physical
+    class TFS,TFH,TP1,TP2 twin
+    class R1,R2 representation
+
+    style P fill:#f8fafc,stroke:#94a3b8,color:#334155
+    style T fill:#eff6ff,stroke:#93c5fd,color:#1e40af
+    style R fill:#f0fdf4,stroke:#86efac,color:#166534
+
+```
+
+## Wikibase and Betwixt as operational semantic layers
+
+Our applications use formal semantic models that serve a different purpose from domain ontologies such as HDT-O, CIDOC CRM, the International Council on Archives Records in Contexts Ontology (RiC-O) and DCTERMS[^2].
+
+[^2]: International Council on Archives Records in Contexts Ontology (ICA RiC-O) version 1.1 [@RiC-O_1_1] and the library standard DCTERMS [@dublin_core_dcmi_2020].
+
+These domain ontologies and vocabularies describe cultural heritage objects, archival records, bibliographic resources, their relationships, and their contexts. By contrast, Wikibase and Betwixt provide *operational semantic structures* that help us maintain, exchange, review, and investigate knowledge expressed using different domain models.
+
+The [Wikibase ontology](https://www.mediawiki.org/wiki/Wikibase/DataModel) describes how knowledge is represented within the Wikibase data model, including items, properties, statements, qualifiers, references, and ranks [@wikibase_datamodel]. It enables us to maintain knowledge from different domains in a common, user-friendly environment while preserving mappings to the original domain ontologies.
+
+The [Betwixt Vocabulary](https://usebetwixt.com/articles/betwixt-vocabulary.html), building on Schema.org and PROV-O, supports the intermediate representation and review of knowledge [\@antal_betwixt_2026]. [Schema.org](https://schema.org/) is a collaborative, community activity with a mission to create, maintain, and promote schemas for structured data on the Internet, on web pages, in email messages, and beyond. The PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) expresses the PROV Data Model \[[PROV-DM](https://www.w3.org/TR/prov-o/#bib-PROV-DM)\] , a W3C standard conceptual data model to preserve information about entities, activities, and people involved in producing a piece of data or thing. Betwixt helps to exchange statements from knowledge graphs, relational databases, and other data structures to be transformed into tabular, matrix, tensor, or simpler graph representations. Researchers and curators can inspect, correct, and warrant claims through familiar interfaces, such as Excel spreadsheets or HTML tables, before accepted knowledge is published back into a graph.
+
+The *Wikibase Ontology* and the *Betwixt Vocabulary* help to build user friendly applications for data stewards, researchers, educators who are familiar with HDT-O, CIDOC CRM, RiC-O, or DCTERMS, but lack data engineering or data production or data programming skills. For example, a curator can describe the Dēliņi farmhouse in Wikibase without writing RDF or directly manipulating HDT-O classes. The resulting statements can be reviewed through Betwixt, explored through Sampo-UI, and queried through Apache Jena Fuseki. When required for interoperability, the same knowledge can be projected into an explicit HDT-O and CIDOC CRM representation without data loss or ambigouity.
+
+**Our objective is to separate expertise in cultural heritage from expertise in semantic technologies.** Curators, researchers, and community experts should be able to contribute and review knowledge using familiar applications, while the underlying semantic infrastructure supports provenance, governance, and interoperability across different cultural heritage domains.
+
+### Representing HDT-O and CIDOC CRM in Wikibase
+
+Wikibase can faithfully represent knowledge expressed in HDT-O and CIDOC CRM. HDT-O and CIDOC CRM classes can be represented as Wikibase items, and their properties as Wikibase properties (see: [@pfeiffer_representing_2021; @kesaniemi_wb_cidoc_202]). Class hierarchies can be expressed through *subclass of* relationships, while individual heritage objects can be assigned to classes through *instance of* relationships–Wikibase can express any class or property that is described in RDF. This preserves the distinction between classes, their superclasses and their instances. Relationships between instances are expressed as Wikibase statements using the corresponding ontology properties. Wikibase also supports references and qualifiers, allowing additional information to be attached to individual statements.
+
+This means that we can maintain HDT-O and CIDOC CRM-compatible knowledge directly in Wikibase without replacing their conceptual models. Exporting that knowledge as RDF requires an appropriate mapping between Wikibase identifiers and the original ontology classes and properties.
+
+```{text}
+
+@prefix hdt: <https://example.org/hdto/> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix ex:  <https://example.org/delini/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Heritage Digital Twins
+ex:house-twin
+    a hdt:HC2 ;
+    rdfs:label "Dēliņi farmhouse digital twin"@en .
+
+ex:farmstead-twin
+    a hdt:HC2 ;
+    rdfs:label "Dēliņi farmstead digital twin"@en .
+
+# Heritage objects
+ex:house
+    a crm:E24_Physical_Human-Made_Thing ;
+    rdfs:label "Dēliņi farmhouse"@en ;
+    crm:P46i_forms_part_of ex:farmstead .
+
+ex:farmstead
+    a crm:E24_Physical_Human-Made_Thing ;
+    rdfs:label "Dēliņi farmstead"@en .
+```
+
+For the illustration of the following examples, we created two HC1 objects, [HC1 Dēliņi farmstead (Q7379)](https://reprexbase.eu/fu/Item:Q7379) and [HC1 Dēliņi farmhouse (BDM 8068) (Q7376)](https://reprexbase.eu/fu/Item:Q7376).
+
+- The first HC1 object is connected with the [has digital twin](https://reprexbase.eu/fu/Property:P484) property to the [Dēliņi farmstead (Q5582)](https://reprexbase.eu/fu/Item:Q5582) digital twin.
+- The second HC1 object is connected with the [has digital twin](https://reprexbase.eu/fu/Property:P484) property to the [Dēliņi farmhouse (BDM 8068) (Q7328)](https://reprexbase.eu/fu/Item:Q7328) digital twin.
+- Both objects allow the use the inverse [digital twin of](https://reprexbase.eu/fu/Property:P482) property.
+
+Yet, just because we can use inverse properties, and HC1-HC2 dual pairs, it is not necessarily a good practice within a given application. We do not require curators to maintain a second, user-facing item for the physical farmhouse. Our users *know* that they work with the digital twin of the farmhouse, and not physically inspecting it in the Latvian Open Air Museum. Maintaining dual nodes in their twinning interface would create confusion or redundancy, and would make text-based searches awkward.
+
+```{text}
+PREFIX wd:   <https://reprexbase.eu/fu/entity/>
+PREFIX wdt:  <https://reprexbase.eu/fu/prop/direct/>
+PREFIX hdt:  <https://example.org/hdto/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+
+# Local representation of the HDT-O heritage entity class
+wd:Q7377
+    a owl:Class ;
+    owl:equivalentClass hdt:HC1 ;
+    rdfs:label "HC1 Heritage Entity"@en .
+
+# Dēliņi farmhouse digital twin
+wd:Q7328
+    wdt:P14 wd:Q3867 ;
+    wdt:P482 wd:Q7376 ;
+    rdfs:label "Dēliņi farmhouse digital twin"@en .
+
+# Dēliņi farmstead digital twin
+wd:Q5582
+    wdt:P14 wd:Q7370 ;
+    wdt:P482 wd:Q7379 ;
+    rdfs:label "Dēliņi farmstead digital twin"@en .
+
+# Physical farmhouse
+wd:Q7376
+    wdt:P14 wd:Q7377 ;
+    wdt:P484 wd:Q7328 ;
+    rdfs:label "HC1 Dēliņi farmhouse"@en .
+
+# Physical farmstead
+wd:Q7379
+    wdt:P14 wd:Q7377 ;
+    wdt:P484 wd:Q5582 ;
+    rdfs:label "HC1 Dēliņi farmstead"@en .
+
+# Property mapping
+# P14  = instance of
+# P482 = digital twin of
+# P484 = has digital twin
+```
+
+In our operational Wikibase, we generally maintain one principal item for each Heritage Digital Twin. The additional `HC1` items shown here demonstrate that Wikibase can explicitly represent the distinction between a heritage entity and its digital twin. However, our normal curatorial workflows do not require users to maintain both resources separately. When producing HDT-O-aligned exports, we materialise the corresponding heritage entities and their relationships to the digital twins through documented semantic mappings.
+
+### Interoperability between Wikibase and HDT-O
+
+Our approach distinguishes the *operational representation of heritage knowledge* from its *ontology-aligned exchange representation*. Wikibase allows curators to work with familiar domain-specific classifications, while documented mappings allow us to project the same knowledge into HDT-O and CIDOC CRM[^3].
+
+[^3]: Heritage Digital Twins Ontology [@echoes_hdto_1-1] and the CIDOC Conceptual Reference Model [@cidoc_2024].
+
+These mappings can operate in both directions within a defined, ontology-compatible subset of the data. However, the projection may also introduce explicit entities, class relationships, and statements that remain implicit in the operational Wikibase, such as the distinction between an `HC1` heritage entity and its `HC2` digital twin.
+
+The objective is to preserve the meaning and identity of heritage knowledge across applications without requiring curators to maintain every ontological distinction explicitly in their everyday workflows.
+
+### Example: projecting heritage relationships into HDT-O
+
+The preceding example demonstrated how our operational Wikibase classes can be projected into the `HC2 Heritage Digital Twin` class hierarchy. A complementary question concerns the statements maintained about the heritage entities themselves.
+
+In our operational Wikibase, the [Dēliņi farmhouse](https://reprexbase.eu/fu/Item:Q7328) is represented by a single user-facing item. Among its statements, we record that the farmhouse is heritage of the [Livonians](https://reprexbase.eu/fu/Item:Q46), classified as an ethnic group.
+
+```{text}
+@prefix wd:  <https://reprexbase.eu/fu/entity/> .
+@prefix wdt: <https://reprexbase.eu/fu/prop/direct/> .
+
+wd:Q46 wdt:P14 wd:Q33 .    # Livonians: ethnic group
+wd:Q7328 wdt:P480 wd:Q46 . # Farmhouse: is heritage of Livonians
+```
+
+In an HDT-O-aligned export, the farmhouse as a physical heritage entity (`HC1`) is distinguished from its digital twin (`HC2`). The heritage relationship is assigned to the physical entity, while the existing Wikibase item retains its identity as the digital twin.
+
+```{text}
+@prefix wd:   <https://reprexbase.eu/fu/entity/> .
+@prefix hdt:  <https://example.org/hdto/> .
+@prefix crm:  <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix ex:   <https://example.org/heritage/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Materialised physical heritage entity
+ex:delini-farmhouse
+    a hdt:HC1 ;
+    hdt:HP15 wd:Q46 ;
+    hdt:HP1 wd:Q7328 ;
+    rdfs:label "Dēliņi farmhouse"@en .
+
+# Existing operational item, projected as a digital twin
+wd:Q7328
+    a hdt:HC2 ;
+    rdfs:label "Dēliņi farmhouse (digital twin)"@en .
+
+# Heritage community
+wd:Q46
+    a crm:E74_Group ;
+    crm:P2_has_type ex:ethnic-group ;
+    rdfs:label "Livonians"@en .
+
+ex:ethnic-group
+    a crm:E55_Type ;
+    rdfs:label "Ethnic group"@en .
+```
+
+The original Wikibase statement is preserved in meaning, but its subject is now explicitly the `HC1` heritage entity rather than the operational item representing its digital twin. The projection also generates the `HP1 has digital twin` relationship between the two resources.
+
+This demonstrates why **ontological distinctions need not correspond to separately maintained records in the operational application**. Curators work with a single Wikibase item, while a documented projection produces the additional entities and relationships required for HDT-O interoperability.
+
+Together, the two examples illustrate how our approach handles both **class-level inheritance** and **instance-level relationships** without imposing the full HDT-O structure on everyday curatorial workflows.
+
+## Extending Heritage Digital Twins to full life-cycle of cultural creation and preservation
+
+The FinFAIR project commits Reprex to developing **rights-aware Heritage Digital Twins**, incorporating legal, ethical, and institutional governance into the evolving knowledge maintained about cultural heritage entities.
+
+Our work suggests that the same requirements arise in the management of contemporary cultural works. Photographs, musical compositions, recorded performances, and other intellectual creations have identifiable subjects, persistent identities, evolving bodies of knowledge, and rights that must be investigated and governed throughout their lifecycles.
+
+We therefore propose introducing a more general **Digital Twin (`DT`) class**, of which `HC2 Heritage Digital Twin` would be a specialised subclass. This would allow the operational principles of HDT-O to be applied to cultural works without requiring them first to be recognised as cultural heritage.
+
+The Dēliņi farmhouse and the two photographic works depicting it illustrate this requirement. The farmhouse is a physical heritage entity, whereas the photographs are independently identifiable intellectual creations. Each can be investigated, described, reviewed, and governed through its own digital twin.
+
+The photographs originate as high-resolution Olympus RAW digital negatives, from which TIFF, JPEG, thumbnail, and other renditions can be produced. These digital representations do not constitute separate photographic works. They provide different means of inspecting and using the same intellectual creation.
+
+The distinction is therefore between three levels:
+
+1.  **The represented entity:** a physical object or identifiable intangible work, such as a farmhouse, photograph, musical composition, or recorded performance.
+2.  **Its Digital Twin (`DT`):** an evolving, governed body of knowledge about that entity, including propositions concerning its identity, interpretation, provenance, rights, and permitted uses.
+3.  **Its digital representations:** particular files, renditions, or other digital resources used to inspect, analyse, reproduce, or communicate the represented entity.
+
+For recognised heritage entities, the Digital Twin can be classified as `HC2 Heritage Digital Twin`. Other cultural works can have Digital Twins without this additional heritage classification. If a cultural work subsequently acquires recognised heritage significance, its existing digital twin can acquire the more specific `HC2` classification without changing its identity or reconstructing its knowledge history.
+
+This distinction is particularly important for rights governance. The legal and ethical conditions governing a photographic work, its individual renditions, and its use as evidence in the investigation of another heritage entity may differ. Maintaining a separate digital twin for the photographic work allows these conditions to be investigated and updated independently.
+
+Our proposal is therefore not to treat every digital file as a digital twin, nor to remove the heritage-specific concepts of HDT-O. Rather, it is to *generalise the digital-twinning mechanism while retaining Heritage Digital Twins as a specialised application.*
+
+Such an extension would make the approach applicable across the lifecycle of cultural production, from the creation and governance of contemporary works to their eventual preservation and interpretation as cultural heritage.
+
+### Rights-aware digital twins of documentary evidence
+
+Our implementation hypothesis extends to the documentary resources used in constructing Heritage Digital Twins. We propose that photographs, manuscripts, drawings, sound recordings, audiovisual works and other documentary resources should have **independently maintained digital twins when their rights, provenance or permitted uses require investigation and governance**.
+
+This is particularly important when a resource is not clearly in the public domain or available under a licence that permits its intended use.
+
+For relatively simple cases, a public-domain declaration or an appropriate Creative Commons licence may provide a practical basis for reuse. However, many cultural resources involve more complex rights. Musical and audiovisual works may combine copyright in compositions, scripts and other creative contributions with performers' neighbouring rights and producers' rights in recordings. Historical manuscripts may involve several authors, translation copyrights, custodial arrangements or contractual restrictions. Photographs can raise additional questions concerning identifiable persons, privacy, personality rights and the circumstances in which an image was created or published.
+
+Consequently, a documentary work or recording may have a **stable identity** while its digital **representations and distributions** are subject to **different conditions of use**.
+
+Our *Finno-Ugric Data Sharing Space* provides an example from sound recordings. ILFA makes WAV and MP3 copies of heritage sound recordings available under conditions that permit certain non-commercial research activities, including computational analysis using Music Information Retrieval (MIR) software. These copies are not necessarily authorised for public performance ((see: *Tīlipa, tālipa*; [Q4166](https://reprexbase.eu/fu/Item:Q4166)).
+
+Conversely, we have distributed recordings of Livonian folk songs (see: *Tīlipa, tālipa*; [Q4413](https://reprexbase.eu/fu/Item:Q4413)) performed by native speakers through commercial streaming services, including Spotify, Amazon Music and Apple Music. These distributions allow listeners to access the recordings under the services' respective terms. For example, people relearning Livonian can listen to the songs at home and sing along. Public performance in a community house, however, would require the appropriate authorisation, potentially through Latvian collective management societies, while downloading and mechanically copying recordings from these streaming services for Music Information Retrieval (MIR) analysis is not authorised by their ordinary consumer terms.
+
+This illustrates a fundamental requirement of rights-aware digital twinning. A digital twin is an evolving environment for investigation, knowledge production and governance, not merely a multimodal database containing licensed media files. Obtaining a licence to store a recording in such a database would address only one possible use and would not establish whether the recording could subsequently be analysed, reproduced, transformed, publicly performed or redistributed.
+
+The relevant distinction is therefore not simply between lawful and unlawful recordings, but between different uses of the same recording, each potentially subject to different legal and ethical conditions. Even when copyright has expired, other rights, contractual obligations or ethical considerations may remain relevant.
+
+A recording may be available for private listening through a commercial streaming service, for computational research through an institutional archive, and for public performance through separately authorised arrangements. These are not necessarily different recordings, but different representations, distributions and permitted uses of the same identifiable cultural resource.
+
+We therefore propose maintaining a digital twin of the recording as an independently identifiable cultural resource. Rather than assigning a single licence or rights status to the recording, the twin maintains *evolving, provenance-aware propositions about its possible uses*: which representations are available, which activities are permitted, under what conditions, by whose authority, and on the basis of which evidence or agreements.
+
+These propositions may change when licences expire, new permissions are granted, rights holders are identified, legal interpretations evolve or community governance decisions are revised. This is precisely why the volatile nature of the digital twin is important. Its identity persists while the accepted knowledge governing the use of its representations changes.
+
+In this model, `HC5 Digital Representation` instances provide access to particular digital manifestations, while the digital twin maintains the reviewed propositions needed to determine their suitability for specific activities. *Rights governance becomes part of the digital twin's evolving knowledge***,** rather than a static attribute of a media file.
+
+The [Dēliņi farmhouse](https://reprexbase.eu/fu/Item:Q7328) provides a complementary photographic example. Its digital twin can be investigated using two photographic works:
+
+- The [frontal photograph (Q7362)](https://reprexbase.eu/fu/Item:Q7362), showing the farmhouse approximately perpendicular to its long façade.
+
+- The [oblique photograph (Q7363)](https://reprexbase.eu/fu/Item:Q7363), showing the building from another perspective, including its gable end.
+
+Both photographs contribute documentary evidence to investigations of the farmhouse. However, they are also independently identifiable, digitally born photographic works, with their own authorship, provenance, technical representations and potentially different rights conditions.
+
+The photographs were originally recorded as Olympus RAW digital negatives. From these originals, we can produce different digital renditions, including TIFF images, JPEG derivatives, thumbnails and cropped details. For example, we could produce a separate JPEG showing only the well in front of the farmhouse, allowing researchers to inspect this architectural feature without distributing the complete high-resolution photograph.
+
+These derivatives are representations of the photographic work rather than new photographic works by default. Their creation and dissemination may nevertheless involve additional rights and permissions.
+
+Our project encounters similar distinctions in externally held photographic collections. The Ventspils Museum and the private collector Igors Plics permit certain reduced-resolution, non-commercial uses of their photographs, while access to or reuse of high-resolution copies requires separate licensing arrangements.
+
+We therefore propose maintaining a separate digital twin for each photographic work where its independent identity, rights or evidential role warrants such treatment. These twins can record and support the review of propositions concerning authorship, creation, provenance, copyright, personality rights, licences, permissions, restrictions and permitted uses.
+
+The photographic works may have multiple digital renditions, including original RAW files, TIFF images, JPEG derivatives and thumbnails. These can be represented as `HC5 Digital Representation` instances and linked to the relevant photographic work and its digital twin.
+
+The distinction is operationally significant. A high-resolution original may be available for authorised scholarly inspection, while a lower-resolution derivative may be approved for public dissemination. Another representation may require attribution, restricted access or additional permission. These decisions should be explicit, attributable to competent agents and open to revision when new evidence or legal circumstances arise.
+
+The farmhouse digital twin can then use these photographic representations as evidence without assuming that every available image is suitable for every purpose. The photographic twins provide the knowledge and governance context needed to select appropriate representations for particular investigations and forms of publication.
+
+Our objective is that the `HC5` representations used in a Heritage Digital Twin should have a documented and sufficiently established legal and ethical basis for their intended use. Where that basis remains uncertain, the uncertainty should be recorded and the relevant use deferred or restricted rather than silently treated as authorised.
+
+This does not mean that every documentary file requires a separately maintained digital twin. The additional structure is particularly valuable where the underlying work or recording has an independent identity, multiple representations, complex rights, uncertain provenance or a significant role as evidence in other digital twins.
+
+We propose to test this approach in ECHOES III as part of our hypothesis for building rights-aware vertical applications on HDT-O. Such applications would combine the investigation of heritage entities with the governance of the documentary resources used to represent and study them.
+
+The broader principle is that **a trustworthy Heritage Digital Twin** depends not only on the quality of its propositions**,** but also on the provenance, lawful availability and ethically justified use of the evidence and representations on which those propositions depend.
+
+## Wikibase and Betwixt as supporting ontologies
+
+The Wikibase and Betwixt ontologies serve a different purpose from domain ontologies such as HDT-O or CIDOC CRM. They do not compete with these ontologies or redefine their concepts. Instead, they provide the semantic structures needed to manage, review and publish domain knowledge in particular software environments.
+
+The **Wikibase ontology** does not describe a particular knowledge domain, such as cultural heritage. RDF provides a general framework for expressing statements, while RDFS and OWL provide vocabulary and formal mechanisms for defining classes, properties, hierarchies and other ontological relationships.
+
+The Wikibase ontology builds on these standards by defining how semantic data is represented within the Wikibase data model. It introduces platform-specific structures for items, properties, statements, qualifiers, references and statement ranks. These structures allow knowledge expressed using domain ontologies such as HDT-O or CIDOC CRM to be stored, maintained and published through Wikibase, the MediaWiki extension that powers Wikidata and other Wikibase installations.
+
+The Wikibase ontology therefore does not replace or extend the domain concepts defined by HDT-O or CIDOC CRM. It provides an additional **representation layer** that connects RDF-based knowledge to the operational capabilities of a particular knowledge graph management system.
+
+The **Betwixt ontology** is similarly expressed in RDF and builds on two established vocabularies: Schema.org, a widely adopted vocabulary for structured web data that does not impose the formal constraints of a domain ontology, and PROV-O, the OWL representation of the W3C PROV data model for provenance.
+
+Betwixt provides an intermediate representation between semantic knowledge graphs and computational workflows. It supports retrieving knowledge from a graph and organising it into tabular, tensor-based or simpler graph structures, where claims can be examined, compared, reviewed and revised. The resulting knowledge, together with its review history and provenance, can then be represented in RDF and published back into the graph.
+
+Like the Wikibase ontology, Betwixt does not compete with domain ontologies such as HDT-O or CIDOC CRM. It provides an **operational semantic layer** for working with knowledge expressed in those ontologies, without redefining the domain concepts themselves.
+
+In this sense, both Wikibase and Betwixt act as **supporting or operational ontologies**. HDT-O and CIDOC CRM describe the heritage domain; Wikibase describes how the resulting knowledge is represented and managed in a particular database system; and Betwixt describes how that knowledge is produced, reviewed and warranted.
+
+Together, Wikibase and Betwixt enable Reprex to develop **user-friendly, domain-specific applications for working with Heritage Digital Twins**. These applications allow heritage professionals to explore, describe, review and maintain digital twins (`HC2`) and their proposition sets (`HC16`) without requiring formal training in ontology engineering or experience in writing RDF. Users can work through familiar interfaces, such as forms, tables and visualisations, while the underlying systems preserve the semantic structure and provenance of their contributions.
+
+This separates **expertise in cultural heritage from expertise in semantic technologies**. Curators, researchers and community experts can contribute their domain knowledge and exercise informed judgement without having to become ontology engineers.
+
+## References
