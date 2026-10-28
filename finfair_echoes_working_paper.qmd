@@ -152,7 +152,7 @@ These domain ontologies and vocabularies describe cultural heritage objects, arc
 
 The [Wikibase ontology](https://www.mediawiki.org/wiki/Wikibase/DataModel) describes how knowledge is represented within the Wikibase data model, including items, properties, statements, qualifiers, references, and ranks [@wikibase_datamodel]. It enables us to maintain knowledge from different domains in a common, user-friendly environment while preserving mappings to the original domain ontologies.
 
-The [Betwixt Vocabulary](https://usebetwixt.com/articles/betwixt-vocabulary.html), building on Schema.org and PROV-O, supports the intermediate representation and review of knowledge [\@antal_betwixt_2026]. [Schema.org](https://schema.org/) is a collaborative, community activity with a mission to create, maintain, and promote schemas for structured data on the Internet, on web pages, in email messages, and beyond. The PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) expresses the PROV Data Model \[[PROV-DM](https://www.w3.org/TR/prov-o/#bib-PROV-DM)\] , a W3C standard conceptual data model to preserve information about entities, activities, and people involved in producing a piece of data or thing. Betwixt helps to exchange statements from knowledge graphs, relational databases, and other data structures to be transformed into tabular, matrix, tensor, or simpler graph representations. Researchers and curators can inspect, correct, and warrant claims through familiar interfaces, such as Excel spreadsheets or HTML tables, before accepted knowledge is published back into a graph.
+The [Betwixt Vocabulary](https://usebetwixt.com/articles/betwixt-vocabulary.html), building on Schema.org and PROV-O, supports the intermediate representation and review of knowledge \[\@antal_betwixt_2026\]. [Schema.org](https://schema.org/) is a collaborative, community activity with a mission to create, maintain, and promote schemas for structured data on the Internet, on web pages, in email messages, and beyond. The PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) expresses the PROV Data Model \[[PROV-DM](https://www.w3.org/TR/prov-o/#bib-PROV-DM)\] , a W3C standard conceptual data model to preserve information about entities, activities, and people involved in producing a piece of data or thing. Betwixt helps to exchange statements from knowledge graphs, relational databases, and other data structures to be transformed into tabular, matrix, tensor, or simpler graph representations. Researchers and curators can inspect, correct, and warrant claims through familiar interfaces, such as Excel spreadsheets or HTML tables, before accepted knowledge is published back into a graph.
 
 The *Wikibase Ontology* and the *Betwixt Vocabulary* help to build user friendly applications for data stewards, researchers, educators who are familiar with HDT-O, CIDOC CRM, RiC-O, or DCTERMS, but lack data engineering or data production or data programming skills. For example, a curator can describe the Dēliņi farmhouse in Wikibase without writing RDF or directly manipulating HDT-O classes. The resulting statements can be reviewed through Betwixt, explored through Sampo-UI, and queried through Apache Jena Fuseki. When required for interoperability, the same knowledge can be projected into an explicit HDT-O and CIDOC CRM representation without data loss or ambigouity.
 
@@ -409,5 +409,35 @@ In this sense, both Wikibase and Betwixt act as **supporting or operational onto
 Together, Wikibase and Betwixt enable Reprex to develop **user-friendly, domain-specific applications for working with Heritage Digital Twins**. These applications allow heritage professionals to explore, describe, review and maintain digital twins (`HC2`) and their proposition sets (`HC16`) without requiring formal training in ontology engineering or experience in writing RDF. Users can work through familiar interfaces, such as forms, tables and visualisations, while the underlying systems preserve the semantic structure and provenance of their contributions.
 
 This separates **expertise in cultural heritage from expertise in semantic technologies**. Curators, researchers and community experts can contribute their domain knowledge and exercise informed judgement without having to become ontology engineers.
+
+## Annex
+
+On **10 July 2026**, we visited the **Latvian Ethnographic Open-Air Museum** (Latvijas Etnogrāfiskais brīvdabas muzejs, LEBM) in Riga to document the reconstruction history of the **Dēliņi Farmstead**. Following discussions with the museum staff, we selected the main farmhouse as a compact but representative case study for demonstrating how museum collections, archival records, library resources, and multilingual heritage knowledge can be brought together into a single interoperable digital twin.
+
+```{mermaid}
+
+flowchart TD
+    A["Farmstead"]
+    B["Farmhouse"]
+    C["Granary"]
+    D["Artefacts"]
+    E["Details"]
+
+    A --> B
+    A --> C
+
+    B --> D
+    B --> E
+
+    D --> F["Leather shoe"]
+    D --> G["Sash"]
+    D --> H["Large spoon"]
+
+    E --> I["Living room"]
+    E --> J["Kitchen"]
+    E --> K["Master bedroom"]
+    E --> L["Roof"]
+
+```
 
 ## References
