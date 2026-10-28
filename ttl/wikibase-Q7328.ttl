@@ -1,0 +1,383 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ontolex: <http://www.w3.org/ns/lemon/ontolex#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix wikibase: <http://wikiba.se/ontology#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix geo: <http://www.opengis.net/ont/geosparql#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix wd: <https://reprexbase.eu/fu/entity/> .
+@prefix data: <https://www.wikidata.org/wiki/Special:EntityData/> .
+@prefix s: <https://reprexbase.eu/fu/entity/statement/> .
+@prefix ref: <https://reprexbase.eu/fu/reference/> .
+@prefix v: <https://reprexbase.eu/fu/value/> .
+@prefix wdt: <https://reprexbase.eu/fu/prop/direct/> .
+@prefix wdtn: <https://reprexbase.eu/fu/prop/direct-normalized/> .
+@prefix p: <https://reprexbase.eu/fu/prop/> .
+@prefix ps: <https://reprexbase.eu/fu/prop/statement/> .
+@prefix psv: <https://reprexbase.eu/fu/prop/statement/value/> .
+@prefix psn: <https://reprexbase.eu/fu/prop/statement/value-normalized/> .
+@prefix pq: <https://reprexbase.eu/fu/prop/qualifier/> .
+@prefix pqv: <https://reprexbase.eu/fu/prop/qualifier/value/> .
+@prefix pqn: <https://reprexbase.eu/fu/prop/qualifier/value-normalized/> .
+@prefix pr: <https://reprexbase.eu/fu/prop/reference/> .
+@prefix prv: <https://reprexbase.eu/fu/prop/reference/value/> .
+@prefix prn: <https://reprexbase.eu/fu/prop/reference/value-normalized/> .
+@prefix wdno: <https://reprexbase.eu/fu/prop/novalue/> .
+
+data:Q7328 a schema:Dataset ;
+	schema:about wd:Q7328 ;
+	cc:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+	schema:softwareVersion "1.0.0" ;
+	schema:version "54971"^^xsd:integer ;
+	schema:dateModified "2026-10-27T20:16:10Z"^^xsd:dateTime ;
+	wikibase:statements "7"^^xsd:integer ;
+	wikibase:sitelinks "0"^^xsd:integer ;
+	wikibase:identifiers "0"^^xsd:integer .
+
+wd:Q7328 a wikibase:Item ;
+	wdt:P14 wd:Q3867 ;
+	wdt:P16 wd:Q5582 ;
+	wdt:P165 wd:Q7362,
+		wd:Q7363 ;
+	wdt:P480 wd:Q46 ;
+	wdt:P484 wd:Q7376 ;
+	wdt:P482 wd:Q7376 ;
+	p:P14 s:Q7328-1a375ad3-4412-55f2-3e7e-c6d0f2354e31 .
+
+s:Q7328-1a375ad3-4412-55f2-3e7e-c6d0f2354e31 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P14 wd:Q3867 .
+
+wd:Q7328 p:P16 s:Q7328-c6a3db72-4d3b-36b0-fb4e-d54432058d7d .
+
+s:Q7328-c6a3db72-4d3b-36b0-fb4e-d54432058d7d a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P16 wd:Q5582 .
+
+wd:Q7328 p:P165 s:Q7328-4a7258be-4a87-6ead-6283-b52c6fc3492b .
+
+s:Q7328-4a7258be-4a87-6ead-6283-b52c6fc3492b a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P165 wd:Q7362 .
+
+wd:Q7328 p:P165 s:Q7328-407afa21-426d-d2dd-5d49-f7042bda3913 .
+
+s:Q7328-407afa21-426d-d2dd-5d49-f7042bda3913 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P165 wd:Q7363 .
+
+wd:Q7328 p:P480 s:Q7328-76f751e3-41e5-09fe-00e4-416b41bb5961 .
+
+s:Q7328-76f751e3-41e5-09fe-00e4-416b41bb5961 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P480 wd:Q46 .
+
+wd:Q7328 p:P484 s:Q7328-617ba7ef-4b71-f0b1-6316-40e9204049c1 .
+
+s:Q7328-617ba7ef-4b71-f0b1-6316-40e9204049c1 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P484 wd:Q7376 .
+
+wd:Q7328 p:P482 s:Q7328-0bc0f26c-43f9-376a-fafd-a416d0cac0d5 .
+
+s:Q7328-0bc0f26c-43f9-376a-fafd-a416d0cac0d5 a wikibase:Statement,
+		wikibase:BestRank ;
+	wikibase:rank wikibase:NormalRank ;
+	ps:P482 wd:Q7376 .
+
+wd:Q7328 rdfs:label "Dēliņi farmhouse (BDM 8068)"@en ;
+	skos:prefLabel "Dēliņi farmhouse (BDM 8068)"@en ;
+	schema:name "Dēliņi farmhouse (BDM 8068)"@en ;
+	rdfs:label "Dēliņi lakóépület (BDM 8068)"@hu ;
+	skos:prefLabel "Dēliņi lakóépület (BDM 8068)"@hu ;
+	schema:name "Dēliņi lakóépület (BDM 8068)"@hu ;
+	rdfs:label "Dēliņu dzīvojamā māja (BDM 8068)"@lv ;
+	skos:prefLabel "Dēliņu dzīvojamā māja (BDM 8068)"@lv ;
+	schema:name "Dēliņu dzīvojamā māja (BDM 8068)"@lv ;
+	schema:description "the main housing unit of the Dēliņi farmstead, built in 1884 in Lūžņa, the Livonian Coast, moved to the Latvian Ethnographic Open-Air Museum in 1971"@en,
+		"A Dēliņi tanya épületegyüttesének lakóépülete"@hu,
+		"lībiešu sētas dzīvojamā māja, celta 1884. gadā Lībiešu krasta Lūžņas ciemā, uzstādīta Latvijas Etnogrāfiskajā brīvdabas muzejā 1971. gadā"@lv ;
+	skos:altLabel "Delini farmhouse (BDM 8068)"@en,
+		"Delini lakóépület (BDM 8068)"@hu,
+		"Lībiešu sētas dzīvojamā māja"@lv .
+
+wd:Q3867 a wikibase:Item ;
+	rdfs:label "building"@en ;
+	skos:prefLabel "building"@en ;
+	schema:name "building"@en ;
+	schema:description "structure, typically with a roof and walls, standing more or less permanently in one place"@en .
+
+wd:P14 a wikibase:Property ;
+	rdfs:label "instance of"@en ;
+	skos:prefLabel "instance of"@en ;
+	schema:name "instance of"@en ;
+	schema:description "that class of which this subject is a particular example and member; different from P15 (subclass of); for example: K2 is an instance of mountain; volcano is a subclass of mountain (and an instance of volcanic landform)"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P14 ;
+	wikibase:claim p:P14 ;
+	wikibase:statementProperty ps:P14 ;
+	wikibase:statementValue psv:P14 ;
+	wikibase:qualifier pq:P14 ;
+	wikibase:qualifierValue pqv:P14 ;
+	wikibase:reference pr:P14 ;
+	wikibase:referenceValue prv:P14 ;
+	wikibase:novalue wdno:P14 .
+
+p:P14 a owl:ObjectProperty .
+
+psv:P14 a owl:ObjectProperty .
+
+pqv:P14 a owl:ObjectProperty .
+
+prv:P14 a owl:ObjectProperty .
+
+wdt:P14 a owl:ObjectProperty .
+
+ps:P14 a owl:ObjectProperty .
+
+pq:P14 a owl:ObjectProperty .
+
+pr:P14 a owl:ObjectProperty .
+
+wdno:P14 a owl:Class ;
+	owl:complementOf _:6e2ad428728ea6f11c56dcbc09431f72 .
+
+_:6e2ad428728ea6f11c56dcbc09431f72 a owl:Restriction ;
+	owl:onProperty wdt:P14 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q5582 a wikibase:Item ;
+	rdfs:label "Dēliņi farmstead"@en ;
+	skos:prefLabel "Dēliņi farmstead"@en ;
+	schema:name "Dēliņi farmstead"@en ;
+	schema:description "a farmstead, constructed between 1819 and late 19th century, form a distinctive three-courtyard layout, originally built in the village of Lūžņa on the Livonian (Baltic) coast. It reached its current form around 1870, and was carefully relocated to the"@en .
+
+wd:P16 a wikibase:Property ;
+	rdfs:label "part of"@en ;
+	skos:prefLabel "part of"@en ;
+	schema:name "part of"@en ;
+	schema:description "object of which the subject is a part (if this subject is already part of object A which is a part of object B, then please only make the subject part of object A), inverse property of \"has part\" (P527, see also \"has parts of the class\" (P2670))"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P16 ;
+	wikibase:claim p:P16 ;
+	wikibase:statementProperty ps:P16 ;
+	wikibase:statementValue psv:P16 ;
+	wikibase:qualifier pq:P16 ;
+	wikibase:qualifierValue pqv:P16 ;
+	wikibase:reference pr:P16 ;
+	wikibase:referenceValue prv:P16 ;
+	wikibase:novalue wdno:P16 .
+
+p:P16 a owl:ObjectProperty .
+
+psv:P16 a owl:ObjectProperty .
+
+pqv:P16 a owl:ObjectProperty .
+
+prv:P16 a owl:ObjectProperty .
+
+wdt:P16 a owl:ObjectProperty .
+
+ps:P16 a owl:ObjectProperty .
+
+pq:P16 a owl:ObjectProperty .
+
+pr:P16 a owl:ObjectProperty .
+
+wdno:P16 a owl:Class ;
+	owl:complementOf _:4a9c65303b813e4aec65cfbbe18d848e .
+
+_:4a9c65303b813e4aec65cfbbe18d848e a owl:Restriction ;
+	owl:onProperty wdt:P16 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q7362 a wikibase:Item ;
+	rdfs:label "Dēliņi farmstead: farmhouse, frontal view with well (photo)"@en ;
+	skos:prefLabel "Dēliņi farmstead: farmhouse, frontal view with well (photo)"@en ;
+	schema:name "Dēliņi farmstead: farmhouse, frontal view with well (photo)"@en ;
+	schema:description "Photograph taken in 2026 showing a frontal view of the main housing unit of the Dēliņi farmstead, built in 1884 in Lūžņa on the Livonian Coast and moved to the Latvian Ethnographic Open-Air Museum in 1971."@en .
+
+wd:P165 a wikibase:Property ;
+	rdfs:label "depicted by"@en ;
+	skos:prefLabel "depicted by"@en ;
+	schema:name "depicted by"@en ;
+	schema:description "connects a (heritage) entity to a digital or media representation (image, video, or audiovisual digital twin) that shows or represents it; inverse of “depicts.”"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P165 ;
+	wikibase:claim p:P165 ;
+	wikibase:statementProperty ps:P165 ;
+	wikibase:statementValue psv:P165 ;
+	wikibase:qualifier pq:P165 ;
+	wikibase:qualifierValue pqv:P165 ;
+	wikibase:reference pr:P165 ;
+	wikibase:referenceValue prv:P165 ;
+	wikibase:novalue wdno:P165 .
+
+p:P165 a owl:ObjectProperty .
+
+psv:P165 a owl:ObjectProperty .
+
+pqv:P165 a owl:ObjectProperty .
+
+prv:P165 a owl:ObjectProperty .
+
+wdt:P165 a owl:ObjectProperty .
+
+ps:P165 a owl:ObjectProperty .
+
+pq:P165 a owl:ObjectProperty .
+
+pr:P165 a owl:ObjectProperty .
+
+wdno:P165 a owl:Class ;
+	owl:complementOf _:432da71255155e6c15f21f7c2bf7c8dd .
+
+_:432da71255155e6c15f21f7c2bf7c8dd a owl:Restriction ;
+	owl:onProperty wdt:P165 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q7363 a wikibase:Item ;
+	rdfs:label "Dēliņi farmstead: farmhouse (oblique view, photo)"@en ;
+	skos:prefLabel "Dēliņi farmstead: farmhouse (oblique view, photo)"@en ;
+	schema:name "Dēliņi farmstead: farmhouse (oblique view, photo)"@en ;
+	schema:description "Photograph taken in 2026 showing an oblique view of the main housing unit of the Dēliņi farmstead, built in 1884 in Lūžņa on the Livonian Coast and moved to the Latvian Ethnographic Open-Air Museum in 1971."@en .
+
+wd:Q46 a wikibase:Item ;
+	rdfs:label "Livonians"@en ;
+	skos:prefLabel "Livonians"@en ;
+	schema:name "Livonians"@en ;
+	schema:description "Finno-ugric ethnic group"@en .
+
+wd:P480 a wikibase:Property ;
+	rdfs:label "is heritage of"@en ;
+	skos:prefLabel "is heritage of"@en ;
+	schema:name "is heritage of"@en ;
+	schema:description "Connects a heritage entity (tangible or intangible) to the community, people, or culture for which it is recognised as heritage. Equivalent to HDTO:HP15 is heritage of, subclass of is associated with. On our browser interface used in the \"cultural origin\""@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P480 ;
+	wikibase:claim p:P480 ;
+	wikibase:statementProperty ps:P480 ;
+	wikibase:statementValue psv:P480 ;
+	wikibase:qualifier pq:P480 ;
+	wikibase:qualifierValue pqv:P480 ;
+	wikibase:reference pr:P480 ;
+	wikibase:referenceValue prv:P480 ;
+	wikibase:novalue wdno:P480 .
+
+p:P480 a owl:ObjectProperty .
+
+psv:P480 a owl:ObjectProperty .
+
+pqv:P480 a owl:ObjectProperty .
+
+prv:P480 a owl:ObjectProperty .
+
+wdt:P480 a owl:ObjectProperty .
+
+ps:P480 a owl:ObjectProperty .
+
+pq:P480 a owl:ObjectProperty .
+
+pr:P480 a owl:ObjectProperty .
+
+wdno:P480 a owl:Class ;
+	owl:complementOf _:c2cfa62cf1c0115b4bc2d68404635504 .
+
+_:c2cfa62cf1c0115b4bc2d68404635504 a owl:Restriction ;
+	owl:onProperty wdt:P480 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:Q7376 a wikibase:Item ;
+	rdfs:label "HC1 Dēliņi farmhouse (BDM 8068)"@en ;
+	skos:prefLabel "HC1 Dēliņi farmhouse (BDM 8068)"@en ;
+	schema:name "HC1 Dēliņi farmhouse (BDM 8068)"@en ;
+	schema:description "the main housing unit of the Dēliņi farmstead, built in 1884 in Lūžņa, the Livonian Coast, moved to the Latvian Ethnographic Open-Air Museum in 1971"@en .
+
+wd:P484 a wikibase:Property ;
+	rdfs:label "has digital twin"@en ;
+	skos:prefLabel "has digital twin"@en ;
+	schema:name "has digital twin"@en ;
+	schema:description "This property links an instance of HC1 Heritage Entity with an instance of its related HC2 Heritage Digital Twin in a given system. If a part of a Heritage Entity is described by an instance of Heritage Digital Twin, it implies that this instance of the H"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P484 ;
+	wikibase:claim p:P484 ;
+	wikibase:statementProperty ps:P484 ;
+	wikibase:statementValue psv:P484 ;
+	wikibase:qualifier pq:P484 ;
+	wikibase:qualifierValue pqv:P484 ;
+	wikibase:reference pr:P484 ;
+	wikibase:referenceValue prv:P484 ;
+	wikibase:novalue wdno:P484 .
+
+p:P484 a owl:ObjectProperty .
+
+psv:P484 a owl:ObjectProperty .
+
+pqv:P484 a owl:ObjectProperty .
+
+prv:P484 a owl:ObjectProperty .
+
+wdt:P484 a owl:ObjectProperty .
+
+ps:P484 a owl:ObjectProperty .
+
+pq:P484 a owl:ObjectProperty .
+
+pr:P484 a owl:ObjectProperty .
+
+wdno:P484 a owl:Class ;
+	owl:complementOf _:3629376219bc7bf0fb9e2b58ebc2ac14 .
+
+_:3629376219bc7bf0fb9e2b58ebc2ac14 a owl:Restriction ;
+	owl:onProperty wdt:P484 ;
+	owl:someValuesFrom owl:Thing .
+
+wd:P482 a wikibase:Property ;
+	rdfs:label "twin of"@en ;
+	skos:prefLabel "twin of"@en ;
+	schema:name "twin of"@en ;
+	schema:description "Connects a HC2 Heritage Digital Twin to a HC1 Heritage Entity, for musical representation use P478 is score of, for textual representation use P126 manifestation of"@en ;
+	wikibase:propertyType <http://wikiba.se/ontology#WikibaseItem> ;
+	wikibase:directClaim wdt:P482 ;
+	wikibase:claim p:P482 ;
+	wikibase:statementProperty ps:P482 ;
+	wikibase:statementValue psv:P482 ;
+	wikibase:qualifier pq:P482 ;
+	wikibase:qualifierValue pqv:P482 ;
+	wikibase:reference pr:P482 ;
+	wikibase:referenceValue prv:P482 ;
+	wikibase:novalue wdno:P482 .
+
+p:P482 a owl:ObjectProperty .
+
+psv:P482 a owl:ObjectProperty .
+
+pqv:P482 a owl:ObjectProperty .
+
+prv:P482 a owl:ObjectProperty .
+
+wdt:P482 a owl:ObjectProperty .
+
+ps:P482 a owl:ObjectProperty .
+
+pq:P482 a owl:ObjectProperty .
+
+pr:P482 a owl:ObjectProperty .
+
+wdno:P482 a owl:Class ;
+	owl:complementOf _:28c471c8e69c560d4c3d304b1ce917e8 .
+
+_:28c471c8e69c560d4c3d304b1ce917e8 a owl:Restriction ;
+	owl:onProperty wdt:P482 ;
+	owl:someValuesFrom owl:Thing .

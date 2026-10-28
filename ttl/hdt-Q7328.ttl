@@ -1,0 +1,245 @@
+# ============================================================
+# DĒLIŅI FARMHOUSE
+# HDT-O / CIDOC CRM SEMANTIC PROJECTION
+# Persistent Reprexbase QIDs are retained.
+# ============================================================
+
+@prefix wd:      <https://reprexbase.eu/fu/entity/> .
+@prefix hdt:     <https://example.org/hdto/> .
+@prefix crm:     <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix crminf:  <http://www.cidoc-crm.org/crminf/> .
+@prefix crmsci:  <http://www.cidoc-crm.org/crmsci/> .
+@prefix ex:      <https://example.org/fudss/> .
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema:  <http://schema.org/> .
+
+
+# ============================================================
+# 1. HERITAGE ENTITY AND DIGITAL TWIN
+# ============================================================
+
+# Physical farmhouse: HC1 and CIDOC CRM E24.
+
+wd:Q7376
+    a hdt:HC1, crm:E24_Physical_Human-Made_Thing ;
+    rdfs:label "Dēliņi farmhouse (BDM 8068)"@en ;
+    hdt:HP1 wd:Q7328 .
+
+# Existing Wikibase QID becomes the HC2 digital twin.
+
+wd:Q7328
+    a hdt:HC2 ;
+    rdfs:label "Dēliņi farmhouse digital twin"@en .
+
+# Livonian heritage community.
+
+wd:Q46
+    a crm:E74_Group ;
+    rdfs:label "Livonians"@en .
+
+
+# ============================================================
+# 2. FARMSTEAD AND PHYSICAL PART-WHOLE RELATIONSHIP
+# ============================================================
+
+# The existing Q5582 remains the operational digital twin
+# of the Dēliņi farmstead.
+
+wd:Q5582
+    a hdt:HC2 ;
+    rdfs:label "Dēliņi farmstead digital twin"@en .
+
+# The physical farmstead is separately identified in the
+# semantic projection. It has no existing QID in this example.
+
+ex:delini-farmstead
+    a hdt:HC1, crm:E24_Physical_Human-Made_Thing ;
+    rdfs:label "Dēliņi farmstead"@en ;
+    hdt:HP1 wd:Q5582 .
+
+
+# ============================================================
+# 3. PHOTOGRAPHIC WORKS AND THEIR DIGITAL TWINS
+# ============================================================
+
+# Two independently identifiable photographic works.
+# CIDOC CRM E36 Visual Item provides a visual-content class.
+# E28 Conceptual Object represents their conceptual identity.
+
+ex:frontal-photographic-work
+    a hdt:HC1, crm:E28_Conceptual_Object,
+      crm:E36_Visual_Item ;
+    rdfs:label "Frontal photographic work"@en ;
+    hdt:HP1 wd:Q7362 .
+
+ex:oblique-photographic-work
+    a hdt:HC1, crm:E28_Conceptual_Object,
+      crm:E36_Visual_Item ;
+    rdfs:label "Oblique photographic work"@en ;
+    hdt:HP1 wd:Q7363 .
+
+# The existing Wikibase identifiers remain HC2 twins.
+
+wd:Q7362
+    a hdt:HC2 ;
+    rdfs:label "Frontal photograph of Dēliņi farmhouse"@en .
+
+wd:Q7363
+    a hdt:HC2 ;
+    rdfs:label "Oblique photograph of Dēliņi farmhouse"@en .
+
+
+# ============================================================
+# 4. HC5 DIGITAL REPRESENTATIONS
+# ============================================================
+
+# Published JPEG representations have independent identities.
+# Their Commons URLs identify their publication pages.
+
+ex:frontal-jpeg
+    a hdt:HC5 ;
+    rdfs:label "Published frontal JPEG with well"@en ;
+    schema:url
+        <https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_frontal_view_with_well.jpg> .
+
+ex:oblique-jpeg
+    a hdt:HC5 ;
+    rdfs:label "Published oblique JPEG"@en ;
+    schema:url
+        <https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_oblique_view.jpg> .
+
+# HDT-O HP22 relates a digital representation to the
+# observable heritage entity represented by it.
+# Here the physical farmhouse is the observable subject.
+
+ex:frontal-jpeg
+    hdt:HP22 wd:Q7376 .
+
+ex:oblique-jpeg
+    hdt:HP22 wd:Q7376 .
+
+# CIDOC CRM P138 expresses the visual representation
+# relationship between photographic content and farmhouse.
+
+ex:frontal-photographic-work
+    crm:P138_represents wd:Q7376 .
+
+ex:oblique-photographic-work
+    crm:P138_represents wd:Q7376 .
+
+
+# ============================================================
+# 5. HC16 HERITAGE PROPOSITION SETS
+# ============================================================
+
+# The three twins maintain independently identifiable,
+# persistent proposition sets.
+
+wd:Q7328
+    hdt:HP33 ex:delini-building-ps-v1 .
+
+wd:Q7362
+    hdt:HP33 ex:frontal-ps-v1 .
+
+wd:Q7363
+    hdt:HP33 ex:oblique-ps-v1 .
+
+ex:delini-building-ps-v1
+    a hdt:HC16, crminf:I4_Proposition_Set ;
+    rdfs:label "Farmhouse proposition set v1"@en .
+
+ex:frontal-ps-v1
+    a hdt:HC16, crminf:I4_Proposition_Set ;
+    rdfs:label "Frontal photograph proposition set v1"@en .
+
+ex:oblique-ps-v1
+    a hdt:HC16, crminf:I4_Proposition_Set ;
+    rdfs:label "Oblique photograph proposition set v1"@en .
+
+
+# ============================================================
+# 6. PROPOSITIONS ABOUT HERITAGE AND PHYSICAL STRUCTURE
+# ============================================================
+
+# The Wikibase statement Q7328 P480 Q46 is translated
+# into the HDT-O relationship concerning the physical entity.
+
+wd:Q7376
+    hdt:HP15 wd:Q46 .
+
+# The physical farmhouse forms part of the physical farmstead.
+# This is the CIDOC CRM interpretation of operational P16.
+
+wd:Q7376
+    crm:P46i_forms_part_of ex:delini-farmstead .
+
+
+# ============================================================
+# 7. PROPOSITIONS ABOUT PHOTOGRAPHIC REPRESENTATIONS
+# ============================================================
+
+# The photographs are independently governed works.
+# These local predicates connect the twins to their works
+# and published digital representations.
+
+ex:hasDigitalRepresentation
+    a rdf:Property ;
+    rdfs:label "has digital representation"@en .
+
+wd:Q7362
+    ex:hasDigitalRepresentation ex:frontal-jpeg .
+
+wd:Q7363
+    ex:hasDigitalRepresentation ex:oblique-jpeg .
+
+
+# ============================================================
+# 8. PROPOSITION MEMBERSHIP
+# Application-level RDF representation of the HC16 contents.
+# ============================================================
+
+ex:hasProposition
+    a rdf:Property ;
+    rdfs:label "has proposition"@en .
+
+# Farmhouse proposition set.
+
+ex:delini-building-ps-v1
+    ex:hasProposition
+        ex:livonian-heritage-claim,
+        ex:farmstead-membership-claim .
+
+ex:livonian-heritage-claim
+    a rdf:Statement ;
+    rdf:subject wd:Q7376 ;
+    rdf:predicate hdt:HP15 ;
+    rdf:object wd:Q46 .
+
+ex:farmstead-membership-claim
+    a rdf:Statement ;
+    rdf:subject wd:Q7376 ;
+    rdf:predicate crm:P46i_forms_part_of ;
+    rdf:object ex:delini-farmstead .
+
+# Frontal photograph proposition set.
+
+ex:frontal-ps-v1
+    ex:hasProposition ex:frontal-representation-claim .
+
+ex:frontal-representation-claim
+    a rdf:Statement ;
+    rdf:subject wd:Q7362 ;
+    rdf:predicate ex:hasDigitalRepresentation ;
+    rdf:object ex:frontal-jpeg .
+
+# Oblique photograph proposition set.
+
+ex:oblique-ps-v1
+    ex:hasProposition ex:oblique-representation-claim .
+
+ex:oblique-representation-claim
+    a rdf:Statement ;
+    rdf:subject wd:Q7363 ;
+    rdf:predicate ex:hasDigitalRepresentation ;
+    rdf:object ex:oblique-jpeg .
