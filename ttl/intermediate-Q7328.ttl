@@ -1,16 +1,21 @@
+
 # ============================================================
-# WIKIBASE RECORD WITH HDT-O ANNOTATIONS
+# WIKIBASE RECORD WITH HDT-O AND CIDOC CRM ANNOTATIONS
 # Dēliņi farmhouse (BDM 8068)
+#
+# Illustrative ontology-aligned projection.
+# Existing Reprexbase QIDs are retained.
 # ============================================================
 
 @prefix wd:       <https://reprexbase.eu/fu/entity/> .
 @prefix wdt:      <https://reprexbase.eu/fu/prop/direct/> .
-@prefix data:     <https://www.wikidata.org/wiki/Special:EntityData/> .
+@prefix data:     <https://reprexbase.eu/fu/wiki/Special:EntityData/> .
 @prefix hdt:      <https://example.org/hdto/> .
 @prefix crm:      <http://www.cidoc-crm.org/cidoc-crm/> .
 @prefix ex:       <https://example.org/fudss/> .
 @prefix rdf:      <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
 @prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
 @prefix schema:   <http://schema.org/> .
 @prefix cc:       <http://creativecommons.org/ns#> .
@@ -21,173 +26,323 @@
 
 # ============================================================
 # 1. NATIVE WIKIBASE DATASET METADATA
-# Describes the RDF export, not the heritage entity or twin.
+#
+# Describes the RDF export, not the heritage entity,
+# digital twin, photographic works or image files.
+#
+# The dataset URI is illustrative until verified against
+# the actual Reprexbase RDF export.
 # ============================================================
 
-data:Q7328 a schema:Dataset ;
+data:Q7328
+    a schema:Dataset ;
     schema:about wd:Q7328 ;
-    cc:license <http://creativecommons.org/publicdomain/zero/1.0/> ;
+    cc:license
+        <http://creativecommons.org/publicdomain/zero/1.0/> ;
     schema:softwareVersion "1.0.0" ;
     schema:version "54971"^^xsd:integer ;
-    schema:dateModified "2026-10-27T20:16:10Z"^^xsd:dateTime ;
+    schema:dateModified
+        "2026-10-27T20:16:10Z"^^xsd:dateTime ;
     wikibase:statements "7"^^xsd:integer ;
     wikibase:sitelinks "0"^^xsd:integer ;
     wikibase:identifiers "0"^^xsd:integer .
 
 
 # ============================================================
-# 2. HDT-O DECLARATIONS
-# Interpret existing Wikibase resources as heritage entities
-# and their independently maintained digital twins.
+# 2. APPLICATION-SPECIFIC CLASSES AND PROPERTIES
+#
+# These terms supplement HDT-O.
+# They are not asserted to belong to the HDT-O ontology.
 # ============================================================
 
-# Application-specific class for building digital twins.
-# This is not a class of physical buildings.
-
 ex:BuildingTwin
+    a owl:Class ;
     rdfs:subClassOf hdt:HC2 ;
     rdfs:label "Building digital twin"@en .
 
-# The existing Wikibase item identifies the farmhouse twin.
+ex:hasProposition
+    a rdf:Property ;
+    rdfs:label "has proposition"@en ;
+    rdfs:comment
+        "Application-specific membership relationship
+         between a persistent proposition set and an
+         individually identified proposition."@en .
 
-wd:Q7328
-    a hdt:HC2, ex:BuildingTwin .
+ex:hasDigitalRepresentation
+    a rdf:Property ;
+    rdfs:label "has digital representation"@en ;
+    rdfs:comment
+        "Application-specific relationship between a
+         digital twin and a digital representation
+         associated with its subject. Not equivalent
+         to HDT-O HP22."@en .
 
-# The physical farmhouse is a separate heritage entity.
+
+# ============================================================
+# 3. HERITAGE ENTITIES AND DIGITAL TWINS
+#
+# HC1 identifies the represented heritage entity.
+# HC2 identifies its independently maintained digital twin.
+# HP1 connects the heritage entity to its digital twin.
+# ============================================================
+
+# 3.1 Physical farmhouse.
 
 wd:Q7376
-    a hdt:HC1, crm:E24_Physical_Human-Made_Thing ;
+    a hdt:HC1,
+      crm:E24_Physical_Human-Made_Thing ;
+    rdfs:label "Dēliņi farmhouse (BDM 8068)"@en ;
     hdt:HP1 wd:Q7328 ;
     hdt:HP15 wd:Q46 .
 
-# The heritage community.
+
+# 3.2 Farmhouse digital twin.
+
+wd:Q7328
+    a hdt:HC2,
+      ex:BuildingTwin ;
+    rdfs:label
+        "Dēliņi farmhouse digital twin"@en .
+
+
+# 3.3 Physical farmstead.
+# Existing Reprexbase heritage entity Q7379.
+
+wd:Q7379
+    a hdt:HC1,
+      crm:E24_Physical_Human-Made_Thing ;
+    rdfs:label "Dēliņi farmstead"@en ;
+    hdt:HP1 wd:Q5582 .
+
+
+# 3.4 Farmstead digital twin.
+
+wd:Q5582
+    a hdt:HC2 ;
+    rdfs:label
+        "Dēliņi farmstead digital twin"@en .
+
+
+# 3.5 Physical part-whole relationship.
+# This is an interpreted heritage relationship,
+# not an automatic consequence of twin composition.
+
+wd:Q7376
+    crm:P46i_forms_part_of wd:Q7379 .
+
+
+# 3.6 Heritage community.
 
 wd:Q46
-    a crm:E74_Group .
+    a crm:E74_Group ;
+    rdfs:label "Livonians"@en .
 
 
 # ============================================================
-# 3. NATIVE WIKIBASE ITEM
-# Operational statements are preserved, except for P484,
-# whose direction is inconsistent with its declared meaning.
+# 4. NATIVE WIKIBASE STATEMENTS
+#
+# Operational assertions are retained with their original
+# identifiers and properties.
+#
+# The HDT-O projection does not overwrite the source data.
 # ============================================================
 
-wd:Q7328 a wikibase:Item ;
+wd:Q7328
+    a wikibase:Item ;
     wdt:P14 wd:Q3867 ;
     wdt:P16 wd:Q5582 ;
     wdt:P165 wd:Q7362,
              wd:Q7363 ;
     wdt:P480 wd:Q46 ;
     wdt:P482 wd:Q7376 ;
-    p:P14 s:Q7328-1a375ad3-4412-55f2-3e7e-c6d0f2354e31 .
+    p:P14
+        s:Q7328-1a375ad3-4412-55f2-3e7e-c6d0f2354e31 .
+
+# The original P484 assertion on Q7328 is not reproduced
+# because its direction conflicts with the property meaning.
+#
+# The correct physical-to-digital relationship is expressed
+# above using HP1. Any source correction should be made
+# separately in Wikibase.
 
 
 # ============================================================
-# 4. PHOTOGRAPHIC DIGITAL TWINS
-# Two independently identifiable photographic works,
-# each maintained through its own HC2 digital twin.
+# 5. PHOTOGRAPHIC WORKS AND THEIR DIGITAL TWINS
+#
+# Each photographic work has an independent identity.
+# Its digital twin maintains knowledge about that work.
+#
+# The HC1 classification below is provisional: it assumes
+# that these photographic works qualify as heritage entities.
+#
+# Local work identifiers are used because no corresponding
+# Reprexbase HC1 QIDs have been established here.
 # ============================================================
+
+# 5.1 Frontal photographic work.
+
+ex:frontal-photographic-work
+    a hdt:HC1,
+      crm:E36_Visual_Item ;
+    rdfs:label
+        "Frontal photographic work of Dēliņi farmhouse"@en ;
+    hdt:HP1 wd:Q7362 ;
+    crm:P138_represents wd:Q7376 .
+
+
+# 5.2 Frontal photographic digital twin.
 
 wd:Q7362
     a hdt:HC2 ;
-    rdfs:label "Frontal photograph of Dēliņi farmhouse"@en .
+    rdfs:label
+        "Frontal photograph of Dēliņi farmhouse: digital twin"@en .
+
+
+# 5.3 Oblique photographic work.
+
+ex:oblique-photographic-work
+    a hdt:HC1,
+      crm:E36_Visual_Item ;
+    rdfs:label
+        "Oblique photographic work of Dēliņi farmhouse"@en ;
+    hdt:HP1 wd:Q7363 ;
+    crm:P138_represents wd:Q7376 .
+
+
+# 5.4 Oblique photographic digital twin.
 
 wd:Q7363
     a hdt:HC2 ;
-    rdfs:label "Oblique photograph of Dēliņi farmhouse"@en .
+    rdfs:label
+        "Oblique photograph of Dēliņi farmhouse: digital twin"@en .
 
 
 # ============================================================
-# 5. HC5 DIGITAL REPRESENTATIONS
-# Published JPEG renditions of the photographic works.
-# Local identifiers distinguish the representations from
-# their Wikimedia Commons file-description pages.
+# 6. HC7 DIGITAL VISUAL OBJECTS
+#
+# HC7 is a subclass of HC5 Digital Representation
+# in the newer HDT-O definition.
+#
+# The JPEGs are representations, not separate digital twins.
+#
+# HP22 connects a digital representation to an HC1 entity.
+#
+# The Commons URLs identify file-description pages,
+# not necessarily the underlying image bytes.
 # ============================================================
+
+# 6.1 Frontal JPEG.
 
 ex:frontal-jpeg
-    a hdt:HC5 ;
-    rdfs:label "Published JPEG: frontal view with well"@en ;
+    a hdt:HC7 ;
+    rdfs:label
+        "Published JPEG: frontal view with well"@en ;
+    hdt:HP22 wd:Q7376,
+             ex:frontal-photographic-work ;
     schema:url
         <https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_frontal_view_with_well.jpg> .
 
+
+# 6.2 Oblique JPEG.
+
 ex:oblique-jpeg
-    a hdt:HC5 ;
-    rdfs:label "Published JPEG: oblique view"@en ;
+    a hdt:HC7 ;
+    rdfs:label
+        "Published JPEG: oblique view"@en ;
+    hdt:HP22 wd:Q7376,
+             ex:oblique-photographic-work ;
     schema:url
         <https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_oblique_view.jpg> .
 
 
 # ============================================================
-# 6. APPLICATION-SPECIFIC PROPOSITION VOCABULARY
-# Local properties used to express proposition membership
-# and relationships to digital representations.
-# They are not asserted to be native HDT-O properties.
+# 7. PHOTOGRAPHIC TWINS AND THEIR REPRESENTATIONS
+#
+# These relationships identify which digital representations
+# are associated with each photographic twin.
+#
+# They are distinct from HP22, which expresses what
+# heritage entity the digital representation represents.
 # ============================================================
 
-ex:hasProposition
-    a rdf:Property ;
-    rdfs:label "has proposition"@en .
+wd:Q7362
+    ex:hasDigitalRepresentation ex:frontal-jpeg .
 
-ex:hasDigitalRepresentation
-    a rdf:Property ;
-    rdfs:label "has digital representation"@en .
+wd:Q7363
+    ex:hasDigitalRepresentation ex:oblique-jpeg .
 
 
 # ============================================================
-# 7. CURRENT HC16 PROPOSITION SETS
-# Each digital twin maintains a current persistent set
-# of propositions about its subject and representations.
+# 8. CURRENT HC16 HERITAGE PROPOSITION SETS
+#
+# HC16 is a persistent set of propositions.
+# HP33 identifies proposition sets currently associated
+# with a digital twin.
+#
+# The membership relationship below is application-specific.
+# A production implementation should identify and preserve
+# the complete contents of each proposition set.
 # ============================================================
 
-# 7.1 Farmhouse proposition set.
+# 8.1 Farmhouse proposition set.
 
 wd:Q7328
     hdt:HP33 ex:delini-building-ps-v1 .
 
 ex:delini-building-ps-v1
     a hdt:HC16 ;
-    rdfs:label "Dēliņi farmhouse: proposition set v1"@en ;
-    ex:hasProposition ex:delini-livonian-heritage-claim .
+    rdfs:label
+        "Dēliņi farmhouse: proposition set v1"@en ;
+    ex:hasProposition
+        ex:delini-livonian-heritage-claim,
+        ex:delini-farmstead-membership-claim .
 
 
-# 7.2 Frontal photograph proposition set.
+# 8.2 Frontal photograph proposition set.
 
 wd:Q7362
     hdt:HP33 ex:frontal-ps-v1 .
 
 ex:frontal-ps-v1
     a hdt:HC16 ;
-    rdfs:label "Frontal photograph: proposition set v1"@en ;
-    ex:hasProposition ex:frontal-representation-claim .
+    rdfs:label
+        "Frontal photograph: proposition set v1"@en ;
+    ex:hasProposition
+        ex:frontal-representation-claim,
+        ex:frontal-rendition-claim .
 
 
-# 7.3 Oblique photograph proposition set.
+# 8.3 Oblique photograph proposition set.
 
 wd:Q7363
     hdt:HP33 ex:oblique-ps-v1 .
 
 ex:oblique-ps-v1
     a hdt:HC16 ;
-    rdfs:label "Oblique photograph: proposition set v1"@en ;
-    ex:hasProposition ex:oblique-representation-claim .
+    rdfs:label
+        "Oblique photograph: proposition set v1"@en ;
+    ex:hasProposition
+        ex:oblique-representation-claim,
+        ex:oblique-rendition-claim .
 
 
 # ============================================================
-# 8. PROPOSITIONS ABOUT THE HERITAGE ENTITY
-# The operational Wikibase statement P480 is projected
-# onto the physical farmhouse using HDT-O HP15.
+# 9. PROPOSITIONS ABOUT THE PHYSICAL FARMHOUSE
+#
+# Native Wikibase assertions are projected onto HC1.
+#
+# RDF reification identifies propositions individually.
+# It does not, by itself, assert that they have been
+# accepted through a completed Betwixt review.
 # ============================================================
 
-# Original operational assertion:
+# 9.1 Heritage community.
 #
-#     wd:Q7328 wdt:P480 wd:Q46 .
+# Source:
+#   wd:Q7328 wdt:P480 wd:Q46 .
 #
-# HDT-O interpretation:
-#
-#     wd:Q7376 hdt:HP15 wd:Q46 .
-#
-# The proposition records that the physical farmhouse
-# is recognised as heritage of the Livonians.
+# Projection:
+#   wd:Q7376 hdt:HP15 wd:Q46 .
 
 ex:delini-livonian-heritage-claim
     a rdf:Statement ;
@@ -196,25 +351,95 @@ ex:delini-livonian-heritage-claim
     rdf:object wd:Q46 .
 
 
+# 9.2 Physical farmstead membership.
+#
+# Source:
+#   wd:Q7328 wdt:P16 wd:Q5582 .
+#
+# Interpreted physical relationship:
+#   wd:Q7376 crm:P46i_forms_part_of wd:Q7379 .
+#
+# This interpretation should be documented and reviewed.
+
+ex:delini-farmstead-membership-claim
+    a rdf:Statement ;
+    rdf:subject wd:Q7376 ;
+    rdf:predicate crm:P46i_forms_part_of ;
+    rdf:object wd:Q7379 .
+
+
 # ============================================================
-# 9. PROPOSITIONS ABOUT DIGITAL REPRESENTATIONS
-# Each photographic twin has a proposition identifying
-# its publicly available HC5 representation.
+# 10. PROPOSITIONS ABOUT DIGITAL REPRESENTATIONS
+#
+# These propositions describe what the JPEGs represent
+# and their association with photographic digital twins.
+#
+# HP22 and ex:hasDigitalRepresentation express
+# different relationships.
 # ============================================================
 
-# 9.1 Frontal photograph.
+# 10.1 Frontal JPEG represents the physical farmhouse.
 
 ex:frontal-representation-claim
+    a rdf:Statement ;
+    rdf:subject ex:frontal-jpeg ;
+    rdf:predicate hdt:HP22 ;
+    rdf:object wd:Q7376 .
+
+
+# 10.2 Frontal photographic twin has a JPEG rendition.
+
+ex:frontal-rendition-claim
     a rdf:Statement ;
     rdf:subject wd:Q7362 ;
     rdf:predicate ex:hasDigitalRepresentation ;
     rdf:object ex:frontal-jpeg .
 
 
-# 9.2 Oblique photograph.
+# 10.3 Oblique JPEG represents the physical farmhouse.
 
 ex:oblique-representation-claim
+    a rdf:Statement ;
+    rdf:subject ex:oblique-jpeg ;
+    rdf:predicate hdt:HP22 ;
+    rdf:object wd:Q7376 .
+
+
+# 10.4 Oblique photographic twin has a JPEG rendition.
+
+ex:oblique-rendition-claim
     a rdf:Statement ;
     rdf:subject wd:Q7363 ;
     rdf:predicate ex:hasDigitalRepresentation ;
     rdf:object ex:oblique-jpeg .
+
+
+# ============================================================
+# 11. SCOPE AND LIMITATIONS
+#
+# This graph demonstrates:
+#
+# - preservation of existing Reprexbase QIDs;
+# - distinction between HC1 and HC2;
+# - explicit HC1-to-HC2 relationships through HP1;
+# - HC7 representations of heritage entities;
+# - current HC16 proposition sets through HP33;
+# - application-specific identification of propositions;
+# - separation of source Wikibase assertions from
+#   ontology-aligned interpretations.
+#
+# Not yet modelled:
+#
+# - persistent Betwixt review records and PROV-O;
+# - review status and competent warrants;
+# - historical proposition sets through HP34;
+# - proposition-set replacement through HP32;
+# - digital twin snapshots;
+# - rights, licences and permitted uses of JPEGs;
+# - technical identifiers for original RAW/TIFF files;
+# - complete HDT-O exchange and SHACL conformance.
+#
+# The HC1 classification of photographic works and the
+# use of HP22 for both a photographic work and its subject
+# remain modelling assumptions requiring confirmation.
+# ============================================================
