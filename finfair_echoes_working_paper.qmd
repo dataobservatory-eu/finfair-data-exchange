@@ -1,5 +1,6 @@
 ---
-title: "FinFAIR: Progress Report and Data Exchange with Echoes"
+title: "Operational Heritage Digital Twins: From Wikibase to HDT-O"
+subtitle: "Semantic Projection, Documentary Evidence and Rights-Aware Knowledge Governance in the Finno-Ugric Data Sharing Space"
 editor: visual
 
 format:
@@ -16,11 +17,13 @@ format:
 
 citation:
   type: report
-  title: "FinFAIR: Progress Report and Data Exchange with Echoes  [working paper]"
+  title: "Operational Heritage Digital Twins: From Wikibase to HDT-O [working paper]"
   author:
     - name: "Daniel Antal"
       orcid: "0000-0001-7513-6760"
-  issued: "2026-10-27"
+  issued: "2026-10-28"
+  
+version: v0.1.0
 
 papersize: A4
 
@@ -34,7 +37,17 @@ nocite: |
   finfair_poster_eadh_2026
 ---
 
-## Reprex applications
+# FinFAIR: Reprex applications
+
+## Introduction
+
+Heritage Digital Twins require more than semantic descriptions of cultural heritage objects. They must support the continuing production, review, maintenance and governance of knowledge derived from heterogeneous documentary evidence. In practice, this knowledge is maintained across institutional databases, knowledge graphs, archival systems and research workflows that cannot reasonably be expected to adopt a single ontology or software environment.
+
+The [Finno-Ugric Data Sharing Space (FUDSS)](https://finnougric.net/) addresses this challenge through an operational architecture combining Wikibase for collaborative knowledge maintenance, Betwixt for provenance-aware knowledge production and review, Apache Jena Fuseki for semantic querying, and Sampo-UI for exploration. Rather than replacing these applications with an HDT-O-specific repository, we propose projecting their maintained knowledge into ontology-aligned representations suitable for exchange with ECHOES.
+
+Our contribution is threefold. First, we demonstrate how existing Wikibase resources can be represented as Heritage Digital Twins (`HC2`) while preserving the distinction between the twins and their represented heritage entities (`HC1`). Second, we propose a workflow connecting reviewed propositions and their provenance to persistent Heritage Proposition Sets (`HC16`). Third, we investigate how documentary works and their digital representations can be independently identified and governed, particularly when rights and permitted uses differ across representations.
+
+Using the **Dēliņi farmhouse and its photographic documentation** as a worked example, this paper presents reproducible RDF representations and identifies both proposed solutions and unresolved questions concerning HDT-O modelling, persistence, provenance and interoperability. Its purpose is to establish a concrete basis for technical discussion, validation and potential collaborative development with ECHOES, rather than to claim conformance with an exchange specification that has not yet been fully established.
 
 The **Finno-Ugric Data Sharing Space (FUDSS)** is a governed cultural heritage data sharing environment built around four complementary applications. Each supports a different aspect of creating, maintaining, reviewing, querying, and sharing knowledge about Heritage Digital Twins[^1].
 
@@ -152,161 +165,362 @@ These domain ontologies and vocabularies describe cultural heritage objects, arc
 
 The [Wikibase ontology](https://www.mediawiki.org/wiki/Wikibase/DataModel) describes how knowledge is represented within the Wikibase data model, including items, properties, statements, qualifiers, references, and ranks [@wikibase_datamodel]. It enables us to maintain knowledge from different domains in a common, user-friendly environment while preserving mappings to the original domain ontologies.
 
-The [Betwixt Vocabulary](https://usebetwixt.com/articles/betwixt-vocabulary.html), building on Schema.org and PROV-O, supports the intermediate representation and review of knowledge \[\@antal_betwixt_2026\]. [Schema.org](https://schema.org/) is a collaborative, community activity with a mission to create, maintain, and promote schemas for structured data on the Internet, on web pages, in email messages, and beyond. The PROV Ontology ([PROV-O](https://www.w3.org/TR/prov-o/)) expresses the PROV Data Model \[[PROV-DM](https://www.w3.org/TR/prov-o/#bib-PROV-DM)\] , a W3C standard conceptual data model to preserve information about entities, activities, and people involved in producing a piece of data or thing. Betwixt helps to exchange statements from knowledge graphs, relational databases, and other data structures to be transformed into tabular, matrix, tensor, or simpler graph representations. Researchers and curators can inspect, correct, and warrant claims through familiar interfaces, such as Excel spreadsheets or HTML tables, before accepted knowledge is published back into a graph.
+The [Betwixt Vocabulary](https://usebetwixt.com/articles/betwixt-vocabulary.html), building on Schema.org and PROV-O, supports the intermediate representation and review of knowledge [@antal_betwixt_2026]. [Schema.org](https://schema.org/) provides a widely adopted vocabulary for structured data, while [PROV-O](https://www.w3.org/TR/prov-o/) expresses the W3C PROV Data Model ([PROV-DM](https://www.w3.org/TR/prov-dm/)) for describing entities, activities, agents and their relationships in the production of information. Betwixt supports the transformation of statements from knowledge graphs, relational databases and other data structures into tabular, matrix, tensor or simpler graph representations. Researchers and curators can inspect, correct and warrant claims through familiar interfaces, such as Excel spreadsheets or HTML tables, before accepted knowledge is published back into a graph.
 
-The *Wikibase Ontology* and the *Betwixt Vocabulary* help to build user friendly applications for data stewards, researchers, educators who are familiar with HDT-O, CIDOC CRM, RiC-O, or DCTERMS, but lack data engineering or data production or data programming skills. For example, a curator can describe the Dēliņi farmhouse in Wikibase without writing RDF or directly manipulating HDT-O classes. The resulting statements can be reviewed through Betwixt, explored through Sampo-UI, and queried through Apache Jena Fuseki. When required for interoperability, the same knowledge can be projected into an explicit HDT-O and CIDOC CRM representation without data loss or ambigouity.
+![Betwixt helps to retain the provenance of curatorial reviews of data ingested or modified into the digital twins.](images/prov/prov_delini.png){fig-align="center"}
 
-**Our objective is to separate expertise in cultural heritage from expertise in semantic technologies.** Curators, researchers, and community experts should be able to contribute and review knowledge using familiar applications, while the underlying semantic infrastructure supports provenance, governance, and interoperability across different cultural heritage domains.
+The Wikibase ontology and Betwixt Vocabulary therefore support applications for data stewards, researchers and educators who possess expertise in cultural heritage but may lack specialised knowledge of RDF, ontology engineering or data programming. For example, a curator can describe the Dēliņi farmhouse in Wikibase, review candidate statements through Betwixt, investigate the resulting knowledge through Sampo-UI and query it through Apache Jena Fuseki. When interoperability requires an explicit HDT-O and CIDOC CRM representation, documented semantic mappings can produce the corresponding exchange structure.
 
-### Representing HDT-O and CIDOC CRM in Wikibase
+**Our objective is to separate expertise in cultural heritage from expertise in semantic technologies.** Curators, researchers and community experts should be able to contribute and review knowledge using familiar applications, while the underlying semantic infrastructure supports provenance, governance and interoperability across different cultural heritage domains.
 
-Wikibase can faithfully represent knowledge expressed in HDT-O and CIDOC CRM. HDT-O and CIDOC CRM classes can be represented as Wikibase items, and their properties as Wikibase properties (see: [@pfeiffer_representing_2021; @kesaniemi_wb_cidoc_202]). Class hierarchies can be expressed through *subclass of* relationships, while individual heritage objects can be assigned to classes through *instance of* relationships–Wikibase can express any class or property that is described in RDF. This preserves the distinction between classes, their superclasses and their instances. Relationships between instances are expressed as Wikibase statements using the corresponding ontology properties. Wikibase also supports references and qualifiers, allowing additional information to be attached to individual statements.
+### Semantic projection from Wikibase to HDT-O
 
-This means that we can maintain HDT-O and CIDOC CRM-compatible knowledge directly in Wikibase without replacing their conceptual models. Exporting that knowledge as RDF requires an appropriate mapping between Wikibase identifiers and the original ontology classes and properties.
+Wikibase can represent knowledge expressed in HDT-O and CIDOC CRM using its own item-and-property model (see [@pfeiffer_representing_2021; @kesaniemi_wb_cidoc_202]). Ontology classes can be represented as Wikibase items and ontology properties as Wikibase properties. Class hierarchies can be expressed through *subclass of* relationships, while individual resources can be assigned to classes through *instance of* relationships. Wikibase statements can also carry qualifiers and references. However, representing an ontology within Wikibase and exporting an ontology-aligned RDF graph are distinct operations: the latter requires explicit mappings between Wikibase identifiers and the corresponding ontology classes, properties and relationships.
 
-```{text}
-
-@prefix hdt: <https://example.org/hdto/> .
-@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
-@prefix ex:  <https://example.org/delini/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-
-# Heritage Digital Twins
-ex:house-twin
-    a hdt:HC2 ;
-    rdfs:label "Dēliņi farmhouse digital twin"@en .
-
-ex:farmstead-twin
-    a hdt:HC2 ;
-    rdfs:label "Dēliņi farmstead digital twin"@en .
-
-# Heritage objects
-ex:house
-    a crm:E24_Physical_Human-Made_Thing ;
-    rdfs:label "Dēliņi farmhouse"@en ;
-    crm:P46i_forms_part_of ex:farmstead .
-
-ex:farmstead
-    a crm:E24_Physical_Human-Made_Thing ;
-    rdfs:label "Dēliņi farmstead"@en .
-```
-
-For the illustration of the following examples, we created two HC1 objects, [HC1 Dēliņi farmstead (Q7379)](https://reprexbase.eu/fu/Item:Q7379) and [HC1 Dēliņi farmhouse (BDM 8068) (Q7376)](https://reprexbase.eu/fu/Item:Q7376).
-
-- The first HC1 object is connected with the [has digital twin](https://reprexbase.eu/fu/Property:P484) property to the [Dēliņi farmstead (Q5582)](https://reprexbase.eu/fu/Item:Q5582) digital twin.
-- The second HC1 object is connected with the [has digital twin](https://reprexbase.eu/fu/Property:P484) property to the [Dēliņi farmhouse (BDM 8068) (Q7328)](https://reprexbase.eu/fu/Item:Q7328) digital twin.
-- Both objects allow the use the inverse [digital twin of](https://reprexbase.eu/fu/Property:P482) property.
-
-Yet, just because we can use inverse properties, and HC1-HC2 dual pairs, it is not necessarily a good practice within a given application. We do not require curators to maintain a second, user-facing item for the physical farmhouse. Our users *know* that they work with the digital twin of the farmhouse, and not physically inspecting it in the Latvian Open Air Museum. Maintaining dual nodes in their twinning interface would create confusion or redundancy, and would make text-based searches awkward.
-
-```{text}
-PREFIX wd:   <https://reprexbase.eu/fu/entity/>
-PREFIX wdt:  <https://reprexbase.eu/fu/prop/direct/>
-PREFIX hdt:  <https://example.org/hdto/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl:  <http://www.w3.org/2002/07/owl#>
-
-# Local representation of the HDT-O heritage entity class
-wd:Q7377
-    a owl:Class ;
-    owl:equivalentClass hdt:HC1 ;
-    rdfs:label "HC1 Heritage Entity"@en .
-
-# Dēliņi farmhouse digital twin
-wd:Q7328
-    wdt:P14 wd:Q3867 ;
-    wdt:P482 wd:Q7376 ;
-    rdfs:label "Dēliņi farmhouse digital twin"@en .
-
-# Dēliņi farmstead digital twin
-wd:Q5582
-    wdt:P14 wd:Q7370 ;
-    wdt:P482 wd:Q7379 ;
-    rdfs:label "Dēliņi farmstead digital twin"@en .
-
-# Physical farmhouse
-wd:Q7376
-    wdt:P14 wd:Q7377 ;
-    wdt:P484 wd:Q7328 ;
-    rdfs:label "HC1 Dēliņi farmhouse"@en .
-
-# Physical farmstead
-wd:Q7379
-    wdt:P14 wd:Q7377 ;
-    wdt:P484 wd:Q5582 ;
-    rdfs:label "HC1 Dēliņi farmstead"@en .
-
-# Property mapping
-# P14  = instance of
-# P482 = digital twin of
-# P484 = has digital twin
-```
-
-In our operational Wikibase, we generally maintain one principal item for each Heritage Digital Twin. The additional `HC1` items shown here demonstrate that Wikibase can explicitly represent the distinction between a heritage entity and its digital twin. However, our normal curatorial workflows do not require users to maintain both resources separately. When producing HDT-O-aligned exports, we materialise the corresponding heritage entities and their relationships to the digital twins through documented semantic mappings.
-
-### Interoperability between Wikibase and HDT-O
-
-Our approach distinguishes the *operational representation of heritage knowledge* from its *ontology-aligned exchange representation*. Wikibase allows curators to work with familiar domain-specific classifications, while documented mappings allow us to project the same knowledge into HDT-O and CIDOC CRM[^3].
+Our approach distinguishes the *operational representation of heritage knowledge* from its *ontology-aligned exchange representation*. Wikibase allows curators to work with familiar domain-specific classifications, while documented mappings allow us to project selected knowledge into HDT-O and CIDOC CRM[^3].
 
 [^3]: Heritage Digital Twins Ontology [@echoes_hdto_1-1] and the CIDOC Conceptual Reference Model [@cidoc_2024].
 
-These mappings can operate in both directions within a defined, ontology-compatible subset of the data. However, the projection may also introduce explicit entities, class relationships, and statements that remain implicit in the operational Wikibase, such as the distinction between an `HC1` heritage entity and its `HC2` digital twin.
+In the Finno-Ugric Data Sharing Space, curators generally work with one principal Wikibase item for each Heritage Digital Twin (`HC2`). This item maintains evolving statements about the represented heritage entity, together with links to related resources and supporting evidence. For example, the [Dēliņi farmhouse (Q7328)](https://reprexbase.eu/fu/Item:Q7328) and [Dēliņi farmstead (Q5582)](https://reprexbase.eu/fu/Item:Q5582) are maintained as operational digital twins.
 
-The objective is to preserve the meaning and identity of heritage knowledge across applications without requiring curators to maintain every ontological distinction explicitly in their everyday workflows.
+HDT-O distinguishes the Heritage Digital Twin (`HC2`) from the Heritage Entity (`HC1`) that it represents. To demonstrate this distinction, we also created the [physical Dēliņi farmhouse (Q7376)](https://reprexbase.eu/fu/Item:Q7376) and [physical Dēliņi farmstead (Q7379)](https://reprexbase.eu/fu/Item:Q7379) as separate `HC1` resources. These are connected to their respective digital twins through the Wikibase properties [has digital twin (P484)](https://reprexbase.eu/fu/Property:P484) and its inverse [digital twin of (P482)](https://reprexbase.eu/fu/Property:P482). The local Wikibase item [Q7377](https://reprexbase.eu/fu/Item:Q7377) represents the `HC1 Heritage Entity` class.
 
-### Example: projecting heritage relationships into HDT-O
+The essential operational relationships can be illustrated as follows:
 
-The preceding example demonstrated how our operational Wikibase classes can be projected into the `HC2 Heritage Digital Twin` class hierarchy. A complementary question concerns the statements maintained about the heritage entities themselves.
+```{text}
+PREFIX wd:  <https://reprexbase.eu/fu/entity/>
+PREFIX wdt: <https://reprexbase.eu/fu/prop/direct/>
 
-In our operational Wikibase, the [Dēliņi farmhouse](https://reprexbase.eu/fu/Item:Q7328) is represented by a single user-facing item. Among its statements, we record that the farmhouse is heritage of the [Livonians](https://reprexbase.eu/fu/Item:Q46), classified as an ethnic group.
+# Physical farmhouse and its digital twin
+wd:Q7376 wdt:P484 wd:Q7328 .
+wd:Q7328 wdt:P482 wd:Q7376 .
+
+# Physical farmstead and its digital twin
+wd:Q7379 wdt:P484 wd:Q5582 .
+wd:Q5582 wdt:P482 wd:Q7379 .
+```
+
+These additional `HC1` resources demonstrate that Wikibase can explicitly represent the distinction between a heritage entity and its digital twin. Nevertheless, maintaining both resources as separate user-facing records is not necessarily desirable in everyday curatorial work. A curator describing the farmhouse already understands that the Wikibase record is a digital representation of knowledge about the physical building, rather than the building itself. Requiring the curator to navigate two parallel records could introduce unnecessary complexity, redundancy and ambiguity into searches and editing workflows.
+
+Our preferred approach is therefore to preserve the existing operational digital twin identifiers and make the corresponding heritage entities explicit where required for ontology-aligned exchange. The projection may use existing `HC1` identifiers, as in this example, or materialise the corresponding entities through documented mappings. The resulting RDF representation can distinguish the physical heritage entities from their digital twins without requiring the operational application to expose every ontological distinction to its users.
+
+The projection must also account for differences between statements about an operational digital twin and statements about the heritage entity it represents. For example, the operational Wikibase item for the farmhouse records that it is heritage of the [Livonians (Q46)](https://reprexbase.eu/fu/Item:Q46), using the local property `P480`:
+
+```{text}
+PREFIX wd:  <https://reprexbase.eu/fu/entity/>
+PREFIX wdt: <https://reprexbase.eu/fu/prop/direct/>
+
+wd:Q46 wdt:P14 wd:Q33 .
+wd:Q7328 wdt:P480 wd:Q46 .
+```
+
+In an HDT-O-aligned representation, the heritage relationship concerns the physical farmhouse (`HC1`), rather than the operational digital twin (`HC2`). The corresponding projection therefore changes the subject of the heritage relationship while preserving the identity of the operational digital twin:
 
 ```{text}
 @prefix wd:  <https://reprexbase.eu/fu/entity/> .
-@prefix wdt: <https://reprexbase.eu/fu/prop/direct/> .
+@prefix hdt: <https://example.org/hdto/> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
 
-wd:Q46 wdt:P14 wd:Q33 .    # Livonians: ethnic group
-wd:Q7328 wdt:P480 wd:Q46 . # Farmhouse: is heritage of Livonians
-```
-
-In an HDT-O-aligned export, the farmhouse as a physical heritage entity (`HC1`) is distinguished from its digital twin (`HC2`). The heritage relationship is assigned to the physical entity, while the existing Wikibase item retains its identity as the digital twin.
-
-```{text}
-@prefix wd:   <https://reprexbase.eu/fu/entity/> .
-@prefix hdt:  <https://example.org/hdto/> .
-@prefix crm:  <http://www.cidoc-crm.org/cidoc-crm/> .
-@prefix ex:   <https://example.org/heritage/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-
-# Materialised physical heritage entity
-ex:delini-farmhouse
-    a hdt:HC1 ;
-    hdt:HP15 wd:Q46 ;
+wd:Q7376
+    a hdt:HC1, crm:E24_Physical_Human-Made_Thing ;
     hdt:HP1 wd:Q7328 ;
-    rdfs:label "Dēliņi farmhouse"@en .
+    hdt:HP15 wd:Q46 .
 
-# Existing operational item, projected as a digital twin
 wd:Q7328
-    a hdt:HC2 ;
-    rdfs:label "Dēliņi farmhouse (digital twin)"@en .
+    a hdt:HC2 .
 
-# Heritage community
 wd:Q46
-    a crm:E74_Group ;
-    crm:P2_has_type ex:ethnic-group ;
-    rdfs:label "Livonians"@en .
-
-ex:ethnic-group
-    a crm:E55_Type ;
-    rdfs:label "Ethnic group"@en .
+    a crm:E74_Group .
 ```
 
-The original Wikibase statement is preserved in meaning, but its subject is now explicitly the `HC1` heritage entity rather than the operational item representing its digital twin. The projection also generates the `HP1 has digital twin` relationship between the two resources.
+The `hdt:` namespace in this illustrative excerpt is a placeholder pending alignment with the authoritative ontology release. The example demonstrates a semantic transformation rather than a simple renaming of Wikibase properties. The original statement `Q7328 → P480 → Q46` is interpreted as a heritage relationship between the physical farmhouse (`Q7376`) and the Livonians (`Q46`), while `HP1` explicitly connects the physical entity to its digital twin.
 
-This demonstrates why **ontological distinctions need not correspond to separately maintained records in the operational application**. Curators work with a single Wikibase item, while a documented projection produces the additional entities and relationships required for HDT-O interoperability.
+Such transformations require documented mappings and, where their interpretation is not mechanically determined, appropriate evidence and review. They should not be assumed to be automatically reversible or lossless for every Wikibase statement. Within a defined interoperability profile, however, the projection can preserve the relevant identities and meanings while making relationships explicit that remain implicit in the operational application.
 
-Together, the two examples illustrate how our approach handles both **class-level inheritance** and **instance-level relationships** without imposing the full HDT-O structure on everyday curatorial workflows.
+The central principle is that **ontological distinctions need not correspond to separately maintained user-facing records.** Wikibase and Betwixt provide operational structures for maintaining and reviewing knowledge, while the semantic projection provides the explicit HDT-O and CIDOC CRM representation needed for interoperability. The following worked example develops this approach using the Dēliņi farmhouse, its photographic documentation and persistent proposition sets, with the native Wikibase RDF, intermediate representation and HDT-O projection provided as separate Turtle files.
 
-## Extending Heritage Digital Twins to full life-cycle of cultural creation and preservation
+# Worked example: projecting operational knowledge into HDT-O
+
+The Dēliņi farmhouse provides a concrete demonstration of how independently maintained Wikibase records can be projected into an HDT-O and CIDOC CRM representation. The example distinguishes physical heritage entities, their digital twins, documentary works, digital representations, and persistent proposition sets.
+
+The complete worked examples are provided in the [FinFAIR Data Exchange repository](https://github.com/dataobservatory-eu/finfair-data-exchange/tree/main/ttl):
+
+- [wikibase-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/wikibase-Q7328.ttl) — the native Wikibase RDF representation, preserving operational identifiers, properties, and statements.
+- [intermediate-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/intermediate-Q7328.ttl) — the intermediate representation, combining Wikibase statements with HDT-O annotations and mappings.
+- [hdt-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/hdt-Q7328.ttl) — the semantic projection into HDT-O and CIDOC CRM.
+
+The following Turtle excerpts illustrate selected relationships from these examples. They preserve existing Reprexbase identifiers but do not constitute a formally validated ECHOES exchange package. The `hdt:` prefix uses an illustrative namespace pending alignment with the authoritative ontology release.
+
+In this example, we provisionally classify the photographic work as `HC1 Heritage Entity` and its digital twin as `HC2 Heritage Digital Twin`. *This is a temporary modelling accommodation, not our preferred final design.* It allows us to demonstrate the relationships supported by the current HDT-O vocabulary without introducing an unrecognised superclass. However, a contemporary photographic work should not need to be classified as cultural heritage merely to have an independently maintained digital twin. Our preferred approach is to introduce a more general `Digital Twin` class, with `HC2 Heritage Digital Twin` as its heritage-specific subclass. This would preserve the identity and knowledge history of a photographic twin regardless of whether the underlying work has acquired recognised heritage significance. The proposed generalisation remains subject to discussion and ontology alignment with ECHOES.
+
+## Heritage entities and digital twins
+
+The physical farmhouse and farmstead are represented separately from their operational digital twins. The `HP1` property establishes the relationship between each heritage entity (`HC1`) and its digital twin (`HC2`).
+
+``` turtle
+wd:Q7376
+    a hdt:HC1, crm:E24_Physical_Human-Made_Thing ;
+    hdt:HP1 wd:Q7328 ;
+    crm:P46i_forms_part_of wd:Q7379 .
+
+wd:Q7379
+    a hdt:HC1, crm:E24_Physical_Human-Made_Thing ;
+    hdt:HP1 wd:Q5582 .
+
+wd:Q7328 a hdt:HC2 .
+wd:Q5582 a hdt:HC2 .
+```
+
+The identifiers `Q7328` and `Q5582` remain the operational digital twins used by curators. The physical heritage entities, `Q7376` and `Q7379`, make the distinction between physical composition and digital-twin identity explicit.
+
+## Photographic works and digital representations
+
+The frontal photograph is an independently identifiable documentary work, while its published JPEG is a digital representation. The photographic work can be investigated and governed separately from the farmhouse it depicts.
+
+``` turtle
+ex:frontal-photographic-work
+    a hdt:HC1, crm:E36_Visual_Item ;
+    hdt:HP1 wd:Q7362 ;
+    crm:P138_represents wd:Q7376 .
+
+wd:Q7362
+    a hdt:HC2 .
+
+ex:frontal-jpeg
+    a hdt:HC7 ;
+    hdt:HP22 wd:Q7376 .
+```
+
+Here, `HC7` follows the newer HDT-O definition of a digital visual object. The photograph's provisional classification as `HC1` assumes that it qualifies as a heritage entity. Whether the same `HP22` relationship should also identify the photographic work represented by the JPEG remains a question for ontology alignment.
+
+The distinction is important for rights governance: the photographic work may have several renditions, each subject to different conditions of access, reproduction or reuse.
+
+## Persistent heritage proposition sets
+
+The operational digital twins maintain identifiable proposition sets using `HC16` and `HP33`.
+
+``` turtle
+wd:Q7328
+    hdt:HP33 ex:delini-building-ps-v1 .
+
+ex:delini-building-ps-v1
+    a hdt:HC16, crminf:I4_Proposition_Set ;
+    ex:hasProposition ex:livonian-heritage-claim .
+
+ex:livonian-heritage-claim
+    a rdf:Statement ;
+    rdf:subject wd:Q7376 ;
+    rdf:predicate hdt:HP15 ;
+    rdf:object wd:Q46 .
+```
+
+The proposition records that the physical farmhouse is recognised as heritage of the Livonians. The `ex:hasProposition` predicate and RDF statement reification are application-specific mechanisms for identifying proposition-set contents; they are not presented as mandatory HDT-O structures.
+
+This arrangement provides a connection to Betwixt. Candidate propositions can be inspected, corrected and reviewed before becoming part of the digital twin's accepted knowledge. Review history and provenance can remain independently identifiable, while the twin maintains its current proposition sets and their historical succession.
+
+## Implications for ECHOES interoperability
+
+These examples demonstrate a possible separation between operational knowledge maintenance and ontology-aligned exchange. Curators need not directly manipulate the full HDT-O model, while an explicit semantic projection can preserve the identities and relationships required for interoperability.
+
+Several questions remain open, including the treatment of independently governed contemporary documentary works, the representation of complete and versioned proposition sets, and the packaging of review provenance and rights decisions for exchange. These questions form the basis for further alignment with ECHOES.
+
+## Proposed solutions and open questions for ECHOES interoperability
+
+The Finno-Ugric Data Sharing Space (FUDSS) provides an operational environment for creating, reviewing, maintaining and exchanging knowledge about cultural heritage. Wikibase maintains persistent knowledge resources, while Betwixt supports the production, review and provenance-aware publication of propositions.
+
+We have developed three complementary RDF examples for the Dēliņi farmhouse:
+
+- [Native Wikibase representation](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/wikibase-Q7328.ttl)
+- [Intermediate Wikibase/HDT-O representation](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/intermediate-Q7328.ttl)
+- [HDT-O/CIDOC CRM semantic projection](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/hdt-Q7328.ttl)
+
+These examples demonstrate proposed modelling patterns but have not yet been validated against a complete, authoritative HDT-O exchange specification.
+
+The following questions distinguish between approaches for which we offer an implementation proposal and issues that remain open for discussion with ECHOES.
+
+### 1. Operational Wikibase items as Heritage Digital Twins
+
+**Status: Proposed solution — ontology alignment to be confirmed.**
+
+We propose treating existing Wikibase items as operational instances of `HC2 Heritage Digital Twin`. For example, the Dēliņi farmhouse (`Q7328`) retains its operational identity, while the physical farmhouse (`Q7376`) is separately represented as an `HC1 Heritage Entity`.
+
+The relationship is expressed through `HP1 has digital twin`. This allows curators to maintain familiar Wikibase records without directly managing every distinction required by HDT-O.
+
+The RDF projection materialises the relevant ontology classes and relationships while preserving the existing operational identifiers.
+
+**Question for ECHOES:** Is this approach compatible with the intended identity and lifecycle semantics of `HC2`? Are there additional requirements for identifying, maintaining or exchanging a digital twin beyond the relationships illustrated in our examples?
+
+### 2. Photographic works, digital twins and digital representations
+
+**Status: Partially resolved — representation semantics remain open.**
+
+Our Dēliņi example distinguishes three resources:
+
+- The independently identifiable photographic work.
+- Its digital twin, maintaining evolving knowledge about the work.
+- Its digital representations, such as RAW, TIFF and JPEG files.
+
+The two photographic twins retain their Reprexbase identifiers (`Q7362` and `Q7363`). Their published JPEGs are modelled separately as `HC7` digital visual objects, a subclass of `HC5 Digital Representation` in the newer HDT-O specification.
+
+This avoids treating each file rendition as a separate photographic work or digital twin.
+
+However, our example provisionally classifies the photographic works as `HC1 Heritage Entity`. This may not be appropriate for contemporary works that have not acquired recognised heritage significance.
+
+**Questions for ECHOES:**
+
+- Can a photographic work have its own `HC2` digital twin while its JPEG also represents another heritage entity?
+- Does `HP22 represents` express both the digital embodiment of a photographic work and the depiction of a physical heritage object, or should different properties be used?
+- Is there a preferred HDT-O relationship between a photographic twin and its digital representations?
+
+### 3. Extending digital twinning beyond recognised heritage
+
+**Status: Open proposal — requires conceptual agreement.**
+
+We propose generalising the digital-twinning mechanism by introducing a `Digital Twin` superclass, with `HC2 Heritage Digital Twin` as a heritage-specific subclass.
+
+This would allow contemporary photographs, musical compositions, sound recordings and other cultural works to have independently maintained digital twins without requiring their prior classification as heritage.
+
+If such a work subsequently acquires recognised heritage significance, its existing twin could receive the more specific `HC2` classification while preserving its identity and knowledge history.
+
+This is a proposed extension rather than an existing HDT-O modelling pattern.
+
+**Question for ECHOES:** Would a general `Digital Twin` superclass be compatible with the intended development of HDT-O? If not, is there another recommended mechanism for maintaining independently governed digital twins of contemporary cultural works?
+
+### 4. Reviewed propositions and persistent proposition sets
+
+**Status: Proposed solution — exchange representation remains open.**
+
+Betwixt supports the creation, examination, correction and review of candidate propositions. Accepted propositions can be published as ordinary Wikibase statements, while the review datasets preserve their evidence, decisions and provenance.
+
+We propose representing the accepted knowledge of a digital twin through persistent `HC16 Heritage Proposition Set` instances, connected to the twin using `HP33 contains`.
+
+The Dēliņi example illustrates an `HC16` proposition set containing the assertion that the physical farmhouse is heritage of the Livonians.
+
+For demonstration purposes, individual propositions are represented through RDF statement reification and an application-specific `ex:hasProposition` property. We do not propose these constructs as mandatory HDT-O vocabulary.
+
+**Questions for ECHOES:**
+
+- What is the recommended interoperable representation of the complete contents of an `HC16` proposition set?
+- Should proposition sets be exchanged as named graphs, persistent RDF resources, or another specified structure?
+- How should the identity and persistence of a proposition set be established when its contents are serialised in different formats?
+
+### 5. Current, former and rejected propositions
+
+**Status: Partially resolved — interpretation of `HP34` remains open.**
+
+Our workflow distinguishes candidate propositions, accepted propositions, superseded propositions and propositions rejected during review.
+
+We propose that only accepted knowledge enters the current proposition sets of a digital twin. When an accepted proposition set is replaced, the former set remains identifiable as part of the twin's history.
+
+Candidate propositions that were never accepted remain in the Betwixt review record rather than automatically becoming historical contents of the digital twin.
+
+This interpretation separates the history of knowledge production from the history of knowledge maintained by the digital twin.
+
+**Question for ECHOES:** Does `HP34 contained` refer specifically to proposition sets that previously formed part of a digital twin, or is it also intended to represent candidate or rejected proposition sets that were never accepted into the twin?
+
+### 6. Provenance of reviewed knowledge
+
+**Status: Proposed solution — HDT-O integration remains open.**
+
+We use PROV-O to describe the agents, activities and evidence involved in producing and reviewing propositions.
+
+Betwixt review documents can be maintained as persistent digital resources, while accepted proposition sets are derived from one or more review activities. This allows different reviewers and sources to contribute to the knowledge eventually maintained by a digital twin.
+
+We propose retaining this review history independently of the current Wikibase statements and linking it to the resulting `HC16` proposition sets.
+
+**Question for ECHOES:** Is PROV-O sufficient for expressing the derivation and review provenance of `HC16` proposition sets from persistent review documents (`HC15`), or does HDT-O envisage more specific relationships or constraints for these activities?
+
+### 7. Physical composition and digital twin composition
+
+**Status: Partially resolved — composition semantics remain open.**
+
+Our examples distinguish physical part–whole relationships from digital twin composition.
+
+The Dēliņi farmhouse is physically part of the Dēliņi farmstead. We represent this relationship using CIDOC CRM `P46i forms part of`, rather than treating physical composition and digital twin composition as identical.
+
+The farmhouse and farmstead also have independently identified digital twins, each potentially maintaining its own proposition sets and governance arrangements.
+
+**Questions for ECHOES:**
+
+- Is `HP3` intended to represent independently established digital twin composition rather than automatically following physical part–whole relationships?
+- Does a component digital twin contribute its `HC16` proposition sets to the composite twin, or are the proposition sets maintained independently?
+- Can a digital twin participate in multiple composite twins without duplicating its propositions?
+
+The last question is particularly relevant to archival records, which may participate in different, overlapping or changing archival arrangements.
+
+### 8. Digital twin snapshots, revisions and persistence
+
+**Status: Open implementation question.**
+
+Our Wikibase environment maintains evolving statements and revision histories, while Betwixt preserves persistent review datasets and their provenance.
+
+These mechanisms provide a basis for reconstructing changes in accepted knowledge. However, we have not yet established a complete HDT-O snapshot mechanism or demonstrated that Wikibase revisions and Betwixt records alone satisfy the intended semantics of `HP28`.
+
+**Questions for ECHOES:**
+
+- Are persistent snapshots an essential requirement of an `HC2` digital twin or an optional mechanism?
+- What constitutes a complete snapshot: the current proposition sets, the represented digital resources, the provenance of their production, or some combination?
+- Is there a recommended way to package and exchange the current state of a digital twin together with its historical states and review provenance?
+
+### 9. Interoperability with archival and library ontologies
+
+**Status: Open interoperability question.**
+
+Our heritage data includes archival records, record sets, library resources and documentary collections whose semantics are often more appropriately expressed through Records in Contexts (RiC-O) or DCTERMS than through CIDOC CRM alone.
+
+We do not propose replacing these domain descriptions with HDT-O classes. Instead, we envisage preserving their original semantic structures while establishing the relationships needed for participation in Heritage Digital Twins.
+
+This is particularly important for archival provenance, record aggregation, changing arrangements and the distinction between records and the entities they document.
+
+**Questions for ECHOES:**
+
+- Can RiC-O entities and relationships participate directly in an HDT-O digital twin without losing their archival semantics?
+- Are recommended mappings or interoperability patterns envisaged for RiC-O, DCTERMS and other domain vocabularies?
+- Can an `HC16` proposition set contain propositions expressed using several domain ontologies, provided their semantics and provenance are preserved?
+
+### 10. Rights-aware governance of documentary representations
+
+**Status: Proposed operational approach — ontology alignment remains open.**
+
+We propose maintaining independently identifiable digital twins for documentary works when their authorship, provenance, rights or permitted uses require investigation and governance.
+
+A photographic work may have RAW, TIFF, JPEG and thumbnail representations, each subject to different access and reuse conditions. Similarly, a sound recording may be available for private listening, computational research or public performance under different permissions.
+
+Our approach does not assign a single rights status to the entire digital twin. Instead, Betwixt supports the review of propositions about particular uses, permissions, restrictions, rights holders and supporting evidence.
+
+These propositions can be revised as new information or permissions become available.
+
+**Questions for ECHOES:**
+
+- Is there a recommended HDT-O integration pattern for rights and permissions expressed through ODRL, PROV-O or related vocabularies?
+- How should rights concerning an underlying cultural work be distinguished from rights and permitted uses concerning its individual digital representations?
+- Can purpose-specific rights decisions be maintained as reviewed propositions within an `HC16` set, including uncertainty, restrictions and the authority responsible for the decision?
+
+## Proposed validation and interoperability work
+
+We do not envisage replacing Wikibase with an ECHOES-specific repository. Instead, we propose developing a reproducible RDF projection from the operational Wikibase and Betwixt environment into the ontology structures expected by ECHOES.
+
+The Dēliņi examples provide an initial test case for this work. We would welcome collaboration on specifying and validating the mapping.
+
+To proceed reliably, we would particularly appreciate:
+
+1.  **Authoritative ontology releases.** A versioned, machine-readable HDT-O specification with stable namespace IRIs, class and property definitions, and documented changes between releases.
+
+2.  **SHACL validation shapes.** Reference shapes describing the structural and semantic constraints expected of HDT-O-compatible RDF exchange.
+
+3.  **Positive and negative test cases.** Representative examples with expected validation outcomes, including cases involving multiple digital twins, proposition sets, representations and provenance.
+
+4.  **EARL reporting guidance.** A recommended approach for reporting which interoperability and conformance tests our projection passes or fails.
+
+5.  **A complete exchange example.** A valid Heritage Digital Twin exchange package illustrating current and historical proposition sets, digital representations, provenance and, where applicable, rights information.
+
+6.  **A collaborative mapping exercise.** We propose using the Dēliņi farmhouse and its photographic documentation as a small reference case for jointly testing the projection, identifying ontology gaps and documenting agreed interoperability patterns.
+
+Our immediate objective is not to extend HDT-O wherever an existing class or property can already express the required meaning. We seek to distinguish between requirements that can be met through documented mappings, requirements that need additional implementation conventions, and genuine conceptual gaps that may justify extending the ontology.
+
+This would allow the Finno-Ugric Data Sharing Space to serve as a practical interoperability demonstrator for ECHOES while preserving its independently governed operational knowledge environment.
+
+# Extending Heritage Digital Twins to full life-cycle of cultural creation and preservation
 
 The FinFAIR project commits Reprex to developing **rights-aware Heritage Digital Twins**, incorporating legal, ethical, and institutional governance into the evolving knowledge maintained about cultural heritage entities.
 
@@ -410,7 +624,7 @@ Together, Wikibase and Betwixt enable Reprex to develop **user-friendly, domain-
 
 This separates **expertise in cultural heritage from expertise in semantic technologies**. Curators, researchers and community experts can contribute their domain knowledge and exercise informed judgement without having to become ontology engineers.
 
-## Annex
+# Annex: Data Overview
 
 On **10 July 2026**, we visited the **Latvian Ethnographic Open-Air Museum** (Latvijas Etnogrāfiskais brīvdabas muzejs, LEBM) in Riga to document the reconstruction history of the **Dēliņi Farmstead**. Following discussions with the museum staff, we selected the main farmhouse as a compact but representative case study for demonstrating how museum collections, archival records, library resources, and multilingual heritage knowledge can be brought together into a single interoperable digital twin.
 
@@ -439,5 +653,7 @@ flowchart TD
     E --> L["Roof"]
 
 ```
+
+![](images/delini/delini_farmstead_hierarchy_diagram_captioned.png){fig-align="center"}
 
 ## References

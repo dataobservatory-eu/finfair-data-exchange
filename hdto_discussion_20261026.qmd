@@ -35,7 +35,6 @@ We understand a Heritage Digital Twin (`HC2`) as an evolving, structured body of
 
 The [Dēliņi farmhouse (Q7328)](https://reprexbase.eu/fu/Item:Q7328) is part of the [Dēliņi farmstead (Q5582)](https://reprexbase.eu/fu/Item:Q5582). Two historical photographs, [frontal view with well (Q7362)](https://reprexbase.eu/fu/Item:Q7362) and [oblique view (Q7363)](https://reprexbase.eu/fu/Item:Q7363), depict the farmhouse. Each photograph may have its own digital twin (`HC2`), while its digital image may also serve as a digital representation (`HC5`) of the farmhouse.
 
-
 ```{mermaid}
 
 
@@ -98,8 +97,7 @@ flowchart TB
 
 ```
 
-
-We use [Betwixt review tables](https://usebetwixt.com/examples/EADH2026/EADH_workshop_exercise_04.html) as an intermediate representation for producing and reviewing knowledge, as we have presented this in the _European Association of Digital Humanities 2026_ conference paper and methodology workshop. Curators examine proposed claims, supporting evidence and existing statements, and record their decisions. Accepted propositions form a Heritage Proposition Set (`HC16`), which can be incorporated into the relevant digital twin. For example, the farmhouse may be classified as a [building (Q3867)](https://reprexbase.eu/fu/Item:Q3867) (`P14`) and associated with the heritage of the [Livonians (Q46)](https://reprexbase.eu/fu/Item:Q46) (`P480`).
+We use [Betwixt review tables](https://usebetwixt.com/examples/EADH2026/EADH_workshop_exercise_04.html) as an intermediate representation for producing and reviewing knowledge, as we have presented this in the *European Association of Digital Humanities 2026* conference paper and methodology workshop. Curators examine proposed claims, supporting evidence and existing statements, and record their decisions. Accepted propositions form a Heritage Proposition Set (`HC16`), which can be incorporated into the relevant digital twin. For example, the farmhouse may be classified as a [building (Q3867)](https://reprexbase.eu/fu/Item:Q3867) (`P14`) and associated with the heritage of the [Livonians (Q46)](https://reprexbase.eu/fu/Item:Q46) (`P480`).
 
 We propose maintaining separate, chronologically organised collections of Betwixt reviews for each digital twin. Individual review documents preserve the evidence, authorship, decisions and provenance of the review process. Using PROV-O, we link these records to the resulting proposition sets and published Wikibase statements.
 
@@ -218,14 +216,11 @@ ex:farmstead-propositions-1
 #   wd:Q5582 wdt:P480 wd:Q46 .
 ```
 
-
 ## Questions for the HDT-O authors
 
 ### Our proposed implementation
 
 We envisage publishing and maintaining our Heritage Digital Twins (`HC2`) in Wikibase. Wikibase will serve as our operational knowledge base, where accepted propositions are published as statements, linked to other heritage resources and supported by references to their provenance.
-
-
 
 We understand that the ECHOES team would like to incorporate our digital twins into its own infrastructure. We therefore envisage developing a tool that projects our Wikibase knowledge graphs into the ontologies and RDF structures preferred by ECHOES, including HDT-O and its dependencies. We would appreciate guidance on the expected exchange format and, ideally, a reference **SHACL validation suite and EARL test cases or reporting requirements**. These would allow us to develop and test the projection systematically, demonstrate conformance and identify interoperability problems before exchanging data.
 
@@ -233,29 +228,27 @@ The following questions concern the conceptual mapping and interoperability requ
 
 ## Questions about modelling, publication and interoperability
 
-1. **Photographs as digital twins or digital representations (`HC2` vs `HC5`).** Is there a preference for modelling historical photographs as `HC2` rather than merely `HC5`? A photograph can itself have an evolving body of knowledge, including attribution, dating, identification, provenance and permissions of use. Can the same photograph have its own digital twin while also serving as a digital representation of another heritage object?
+1.  **Photographs as digital twins or digital representations (`HC2` vs `HC5`).** Is there a preference for modelling historical photographs as `HC2` rather than merely `HC5`? A photograph can itself have an evolving body of knowledge, including attribution, dating, identification, provenance and permissions of use. Can the same photograph have its own digital twin while also serving as a digital representation of another heritage object?
 
-2. **Archival records, library resources and ontology interoperability.** Our heritage resources include archival records and collections that are more naturally described using [Records in Contexts](https://www.ica.org/ica-network/expert-groups/egad/records-in-contexts-ric/) (RiC-O) than CIDOC CRM, with RiC being itself very much CIDOC-influenced, but far more appropriate for documents than CIDOC. Can RiC-O entities be mapped into HDT-O without losing their archival semantics? Similarly, can library resources described using DCTERMS participate in the same digital twin framework? Do you envisage recommended mappings or interoperability patterns for these ontologies?
+2.  **Archival records, library resources and ontology interoperability.** Our heritage resources include archival records and collections that are more naturally described using [Records in Contexts](https://www.ica.org/ica-network/expert-groups/egad/records-in-contexts-ric/) (RiC-O) than CIDOC CRM, with RiC being itself very much CIDOC-influenced, but far more appropriate for documents than CIDOC. Can RiC-O entities be mapped into HDT-O without losing their archival semantics? Similarly, can library resources described using DCTERMS participate in the same digital twin framework? Do you envisage recommended mappings or interoperability patterns for these ontologies?
 
-3. **Wikibase items as operational digital twins (`HC2`).** We propose treating existing Wikibase items as operational `HC2` instances, rather than creating separate items for the digital twins. Each item maintains an evolving set of accepted statements and links to related resources. Is this an acceptable approach for an HDT-O projection?
+3.  **Wikibase items as operational digital twins (`HC2`).** We propose treating existing Wikibase items as operational `HC2` instances, rather than creating separate items for the digital twins. Each item maintains an evolving set of accepted statements and links to related resources. Is this an acceptable approach for an HDT-O projection?
 
-4. **Reviewed proposition sets (`HC16`) and Wikibase statements.** Betwixt produces reviewed proposition sets (`HC16`), whose accepted claims are published as ordinary Wikibase statements. The review datasets preserve the evidence, decisions and provenance supporting these statements. We propose this as our knowledge production and publication workflow.
+4.  **Reviewed proposition sets (`HC16`) and Wikibase statements.** Betwixt produces reviewed proposition sets (`HC16`), whose accepted claims are published as ordinary Wikibase statements. The review datasets preserve the evidence, decisions and provenance supporting these statements. We propose this as our knowledge production and publication workflow.
 
-5. **Current and former proposition sets (`HP33` and `HP34`).** HDT-O distinguishes proposition sets currently contained in a digital twin (`HP33`) from those previously contained (`HP34`). In our approach, accepted Betwixt propositions enter Wikibase, while subsequent reviews may revise or withdraw them. Does `HP34` apply only to propositions that were previously accepted and later superseded, or can it also describe propositions that were considered during review but never accepted into the digital twin?
+5.  **Current and former proposition sets (`HP33` and `HP34`).** HDT-O distinguishes proposition sets currently contained in a digital twin (`HP33`) from those previously contained (`HP34`). In our approach, accepted Betwixt propositions enter Wikibase, while subsequent reviews may revise or withdraw them. Does `HP34` apply only to propositions that were previously accepted and later superseded, or can it also describe propositions that were considered during review but never accepted into the digital twin?
 
-6. **HDT-O and PROV-O interoperability.** We use PROV-O to describe how reviewed proposition sets (`HC16`) are derived from persistent Betwixt review documents (`HC15`), including cases where multiple reviews contribute to the same proposition set. Does HDT-O envisage a more specific relationship for this purpose, or is PROV-O sufficient?
+6.  **HDT-O and PROV-O interoperability.** We use PROV-O to describe how reviewed proposition sets (`HC16`) are derived from persistent Betwixt review documents (`HC15`), including cases where multiple reviews contribute to the same proposition set. Does HDT-O envisage a more specific relationship for this purpose, or is PROV-O sufficient?
 
-7. **Digital twin composition (`HP3`).** We distinguish physical part–whole relationships from the composition of digital twins. Is `HP3` intended to express an independently established digital composition, rather than automatically following physical part–whole relationships? If one digital twin is a component of another, does this imply any inclusion or inheritance of its `HC16` proposition sets? This is particularly important for archival records, which may belong to different Record Sets, potentially with overlapping or changing arrangements.
+7.  **Digital twin composition (`HP3`).** We distinguish physical part–whole relationships from the composition of digital twins. Is `HP3` intended to express an independently established digital composition, rather than automatically following physical part–whole relationships? If one digital twin is a component of another, does this imply any inclusion or inheritance of its `HC16` proposition sets? This is particularly important for archival records, which may belong to different Record Sets, potentially with overlapping or changing arrangements.
 
-8. **Digital twin snapshots (`HP28`) and persistence.** Our Wikibase digital twins evolve as reviewed propositions are added, revised or withdrawn. We preserve the Betwixt reviews and their provenance, while Wikibase maintains its own revision history. Does HDT-O envisage complete, persistent snapshots (`HP28`) as an essential part of digital twin maintenance, or are they optional? For exchanging digital twins between institutions, is there a recommended way to package their current propositions, historical reviews and provenance?
+8.  **Digital twin snapshots (`HP28`) and persistence.** Our Wikibase digital twins evolve as reviewed propositions are added, revised or withdrawn. We preserve the Betwixt reviews and their provenance, while Wikibase maintains its own revision history. Does HDT-O envisage complete, persistent snapshots (`HP28`) as an essential part of digital twin maintenance, or are they optional? For exchanging digital twins between institutions, is there a recommended way to package their current propositions, historical reviews and provenance?
 
 ### Validation and interoperability
 
-We do not envisage replacing Wikibase with an ECHOES-specific repository. Instead, we propose developing a reproducible RDF projection from our operational Wikibase and Betwixt environment into the ontology structures expected by ECHOES. To implement and validate this projection, we would appreciate the following:
-To implement the mapping reliably, we would particularly appreciate:
+We do not envisage replacing Wikibase with an ECHOES-specific repository. Instead, we propose developing a reproducible RDF projection from our operational Wikibase and Betwixt environment into the ontology structures expected by ECHOES. To implement and validate this projection, we would appreciate the following: To implement the mapping reliably, we would particularly appreciate:
 
 - A reference set of SHACL shapes defining the expected structure and constraints of HDT-O-compatible RDF.
 - Representative positive and negative test cases, with expected validation outcomes.
 - Guidance on EARL reporting so that we can document which interoperability and conformance tests our projection tool passes or fails.
 - An example of a complete, valid Heritage Digital Twin exchange package, including proposition sets, digital representations and provenance.
-
