@@ -513,28 +513,28 @@ The dual classification also supports rights-aware governance. The original high
 
 Our approach therefore distinguishes three levels: the photographic work as an independently identifiable subject of investigation, its evolving digital twin (`HC2`), and its persistent digital manifestations (`HC7` and `HC15`). This structure allows the frontal and oblique photographs to serve as evidence in the digital twin of the Dēliņi farmhouse without losing their independent identity, provenance or governance context. Although photographs provide the clearest demonstration, the same distinctions are relevant to sound recordings, musical notation, video and three-dimensional digital representations, where the relationships between intellectual works, digital manifestations and permitted uses may be considerably more complex.
 
+
 # Worked example: projecting operational knowledge into HDT-O
 
-The Dēliņi farmhouse provides a concrete demonstration of how independently maintained Wikibase records can be projected into an HDT-O and CIDOC CRM representation. The example distinguishes physical heritage entities, their digital twins, documentary works, digital representations, and persistent proposition sets.
+The Dēliņi farmhouse provides an initial demonstration of how independently maintained Wikibase records can be projected into an HDT-O and CIDOC CRM representation. The example distinguishes physical heritage entities, their digital twins, independently identifiable photographic works, fixed digital manifestations and proposition sets. It is intended as a first consultation draft for discussion with ECHOES, rather than a final modelling recommendation or validated interoperability package.
 
-The complete worked examples are provided in the [FinFAIR Data Exchange repository](https://github.com/dataobservatory-eu/finfair-data-exchange/tree/main/ttl):
+Three complementary RDF examples are maintained in the [FinFAIR Data Exchange repository](https://github.com/dataobservatory-eu/finfair-data-exchange/tree/main/ttl):
 
-- [wikibase-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/wikibase-Q7328.ttl) — the native Wikibase RDF representation, preserving operational identifiers, properties, and statements.
-- [intermediate-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/intermediate-Q7328.ttl) — the intermediate representation, combining Wikibase statements with HDT-O annotations and mappings.
-- [hdt-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/hdt-Q7328.ttl) — the semantic projection into HDT-O and CIDOC CRM.
+- [wikibase-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/wikibase-Q7328.ttl) — the native Wikibase RDF representation, preserving operational identifiers, properties and statements.
+- [intermediate-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/intermediate-Q7328.ttl) — an intermediate representation combining selected operational Wikibase statements with HDT-O and CIDOC CRM annotations.
+- [hdt-Q7328.ttl](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/hdt-Q7328.ttl) — the proposed semantic projection into HDT-O and CIDOC CRM, without the native Wikibase export statements.
 
-The following Turtle excerpts illustrate selected relationships from these examples. They preserve existing Reprexbase identifiers but do not constitute a formally validated ECHOES exchange package. The `hdt:` prefix uses an illustrative namespace pending alignment with the authoritative ontology release.
-
-In this example, we provisionally classify the photographic work as `HC1 Heritage Entity` and its digital twin as `HC2 Heritage Digital Twin`. *This is a temporary modelling accommodation, not our preferred final design.* It allows us to demonstrate the relationships supported by the current HDT-O vocabulary without introducing an unrecognised superclass. However, a contemporary photographic work should not need to be classified as cultural heritage merely to have an independently maintained digital twin. Our preferred approach is to introduce a more general `Digital Twin` class, with `HC2 Heritage Digital Twin` as its heritage-specific subclass. This would preserve the identity and knowledge history of a photographic twin regardless of whether the underlying work has acquired recognised heritage significance. The proposed generalisation remains subject to discussion and ontology alignment with ECHOES.
+The intermediate and final examples have been revised to distinguish photographic works from their fixed digital manifestations and to introduce the complementary `HC7` and `HC15` classifications. The following excerpts reflect these revised files; the repository links should be updated with the corrected versions before circulation. The examples preserve existing Reprexbase identifiers where available. The `hdt:` namespace remains illustrative, and the files have been checked for Turtle syntax but not yet validated against authoritative HDT-O ontology constraints or ECHOES SHACL shapes.
 
 ## Heritage entities and digital twins
 
-The physical farmhouse and farmstead are represented separately from their operational digital twins. The `HP1` property establishes the relationship between each heritage entity (`HC1`) and its digital twin (`HC2`).
+The physical Dēliņi farmhouse and farmstead are distinguished from their operational digital twins. The `HP1` property connects each heritage entity (`HC1`) to its digital twin (`HC2`). The physical farmhouse is also explicitly represented as part of the physical farmstead using the CIDOC CRM property `P46i forms part of`.
 
-``` turtle
+```{text}
 wd:Q7376
     a hdt:HC1, crm:E24_Physical_Human-Made_Thing ;
     hdt:HP1 wd:Q7328 ;
+    hdt:HP15 wd:Q46 ;
     crm:P46i_forms_part_of wd:Q7379 .
 
 wd:Q7379
@@ -545,204 +545,225 @@ wd:Q7328 a hdt:HC2 .
 wd:Q5582 a hdt:HC2 .
 ```
 
-The identifiers `Q7328` and `Q5582` remain the operational digital twins used by curators. The physical heritage entities, `Q7376` and `Q7379`, make the distinction between physical composition and digital-twin identity explicit.
+The identifiers `Q7328` and `Q5582` remain the operational digital twins used by curators. The separately identified physical entities, `Q7376` and `Q7379`, make explicit the distinction between the heritage objects and the digital environments through which they are investigated. The relationship between the physical farmhouse and farmstead is not assumed to imply an identical composition relationship between their digital twins.
 
-## Photographic works and digital representations
+The intermediate representation also preserves selected native Wikibase assertions, including the operational relationship between the farmhouse and farmstead and the attribution of the farmhouse to Livonian heritage. Their interpretation as relationships between physical heritage entities is made explicit in the HDT-O projection. Where source statements appear inconsistent with the intended meaning of a Wikibase property, they require separate verification rather than silent correction during projection.
 
-The frontal photograph is an independently identifiable documentary work, while its published JPEG is a digital representation. The photographic work can be investigated and governed separately from the farmhouse it depicts.
+## Photographic works, digital twins and persistent manifestations
 
-``` turtle
+The frontal and oblique photographs of the Dēliņi farmhouse are independently identifiable documentary works. They depict the same physical heritage entity but have different photographic viewpoints and may have different creation histories, interpretations, rights and permitted uses. Their operational Wikibase identifiers, [`Q7362`](https://reprexbase.eu/fu/Item:Q7362) and [`Q7363`](https://reprexbase.eu/fu/Item:Q7363), are retained as the identifiers of their digital twins.
+
+In the current example, each photographic work is provisionally classified as `HC1 Heritage Entity` and `crm:E36 Visual Item`, while its digital twin is classified as `HC2 Heritage Digital Twin`. This permits us to test the existing HDT-O relationships without introducing an additional ontology class. It does not settle whether every contemporary photographic work used in heritage documentation should itself be recognised as a heritage entity.
+
+```{text}
 ex:frontal-photographic-work
     a hdt:HC1, crm:E36_Visual_Item ;
     hdt:HP1 wd:Q7362 ;
     crm:P138_represents wd:Q7376 .
 
-wd:Q7362
-    a hdt:HC2 .
+wd:Q7362 a hdt:HC2 .
 
-ex:frontal-jpeg
-    a hdt:HC7 ;
-    hdt:HP22 wd:Q7376 .
+ex:oblique-photographic-work
+    a hdt:HC1, crm:E36_Visual_Item ;
+    hdt:HP1 wd:Q7363 ;
+    crm:P138_represents wd:Q7376 .
+
+wd:Q7363 a hdt:HC2 .
 ```
 
-Here, `HC7` follows the newer HDT-O definition of a digital visual object. The photograph's provisional classification as `HC1` assumes that it qualifies as a heritage entity. Whether the same `HP22` relationship should also identify the photographic work represented by the JPEG remains a question for ontology alignment.
+The photographic works are further distinguished from their digital manifestations. Both photographs originated as Olympus RAW (`ORF`) files, from which TIFF, JPEG and other renditions may be generated. The original RAW file and each fixed derivative can have a persistent digital identity without becoming a separate photographic work or digital twin.
 
-The distinction is important for rights governance: the photographic work may have several renditions, each subject to different conditions of access, reproduction or reuse.
+For the published JPEGs, our revised projection proposes a dual classification as `HC7 Digital Audiovisual Object` and `HC15 Persistent Digital Object`. These classes describe complementary aspects of the same resource: its character as a digital visual representation and its identity as a digital object with fixed bit-level content. The dual classification is intended to avoid introducing separate resources merely to express these two characteristics.
+
+```{text}
+ex:frontal-jpeg
+    a hdt:HC7, hdt:HC15 ;
+    hdt:HP9 wd:Q7376 .
+
+ex:oblique-jpeg
+    a hdt:HC7, hdt:HC15 ;
+    hdt:HP9 wd:Q7376 .
+
+ex:frontal-photographic-work
+    ex:hasManifestation ex:frontal-jpeg .
+
+ex:oblique-photographic-work
+    ex:hasManifestation ex:oblique-jpeg .
+
+wd:Q7362
+    ex:hasDigitalRepresentation ex:frontal-jpeg .
+
+wd:Q7363
+    ex:hasDigitalRepresentation ex:oblique-jpeg .
+```
+
+In this proposal, `HP9` expresses the visual depiction of the physical farmhouse. It is distinguished from the application-specific `ex:hasManifestation` property, which connects a photographic work to a particular digital manifestation, and `ex:hasDigitalRepresentation`, which associates the photographic twin with that manifestation. The latter two properties are not presented as part of HDT-O. The precise constraints and suitability of `HP9` remain to be confirmed against the authoritative ontology.
+
+The distinction between the photographic work and its manifestations is also relevant to digital identification. We envisage assigning ISCC identifiers to individual fixed files, including ISCC-INSTANCE and ISCC-DATA components [@iscc_2024]. Additional ISCC components may support comparisons of perceptual content and metadata across renditions. The original `ORF` file, a preservation TIFF and a published JPEG can thus remain separately identifiable while being associated with the same photographic work. The current RDF examples do not yet include the RAW originals, TIFF derivatives or calculated ISCC identifiers, because these must be derived from the actual files rather than invented for illustration.
+
+The same distinction supports rights-aware governance. A photographic work may be subject to copyright and attribution requirements, while its original RAW file, high-resolution preservation copy and publicly distributed JPEG may be subject to different access and reuse arrangements. The photographic twin provides an evolving environment for maintaining knowledge about these conditions, while the persistent manifestations identify the particular digital resources to which permissions and restrictions apply.
 
 ## Persistent heritage proposition sets
 
-The operational digital twins maintain identifiable proposition sets using `HC16` and `HP33`.
+The revised RDF examples also illustrate how digital twins can be associated with independently identified proposition sets. HDT-O provides `HC16 Heritage Proposition Set`, a specialisation of `HC15 Persistent Digital Object`, and `HP33` for associating a digital twin with its currently contained proposition sets.
 
-``` turtle
+The farmhouse and the two photographic twins are each associated with a version-labelled proposition set. For the farmhouse, the example includes propositions concerning Livonian heritage attribution and membership of the farmstead. The photographic examples include propositions concerning the published JPEGs and their relationships to the photographic twins.
+
+```{text}
 wd:Q7328
     hdt:HP33 ex:delini-building-ps-v1 .
 
 ex:delini-building-ps-v1
-    a hdt:HC16, crminf:I4_Proposition_Set ;
-    ex:hasProposition ex:livonian-heritage-claim .
+    a hdt:HC16 ;
+    ex:hasProposition
+        ex:delini-livonian-heritage-claim,
+        ex:delini-farmstead-membership-claim .
 
-ex:livonian-heritage-claim
+ex:delini-livonian-heritage-claim
     a rdf:Statement ;
     rdf:subject wd:Q7376 ;
     rdf:predicate hdt:HP15 ;
     rdf:object wd:Q46 .
 ```
 
-The proposition records that the physical farmhouse is recognised as heritage of the Livonians. The `ex:hasProposition` predicate and RDF statement reification are application-specific mechanisms for identifying proposition-set contents; they are not presented as mandatory HDT-O structures.
+The reified proposition records the interpretation that the physical farmhouse, rather than its digital twin, is heritage of the Livonians. The `ex:hasProposition` predicate and RDF statement reification are application-specific mechanisms for identifying proposition-set members; they are not proposed as mandatory HDT-O constructs.
 
-This arrangement provides a connection to Betwixt. Candidate propositions can be inspected, corrected and reviewed before becoming part of the digital twin's accepted knowledge. Review history and provenance can remain independently identifiable, while the twin maintains its current proposition sets and their historical succession.
+Importantly, these examples do not yet demonstrate complete persistent proposition-set serialisation. Although the resources are provisionally classified as `HC16`, their full contents, boundaries, fixation mechanisms and subsequent preservation have not been established. The examples therefore demonstrate the intended relationship between an evolving digital twin and persistent knowledge states, rather than a completed implementation of `HC16`.
+
+This distinction is particularly important for Betwixt. Candidate propositions can be inspected, corrected and reviewed before their acceptance into operational knowledge. Review records, evidence and decisions may be preserved independently of the current state of a digital twin. An accepted proposition set can subsequently be replaced without losing the identity of the earlier set. The precise representation of these transitions, including the use of `HP34` for former proposition sets, remains a subject for consultation.
 
 ## Implications for ECHOES interoperability
 
-These examples demonstrate a possible separation between operational knowledge maintenance and ontology-aligned exchange. Curators need not directly manipulate the full HDT-O model, while an explicit semantic projection can preserve the identities and relationships required for interoperability.
+These examples illustrate a possible separation between operational knowledge maintenance and ontology-aligned exchange. Wikibase provides practical identifiers and descriptions, Betwixt supports the review of candidate knowledge, and semantic projection makes relevant ontological distinctions explicit without requiring curators to maintain all such distinctions as separate operational records.
 
-Several questions remain open, including the treatment of independently governed contemporary documentary works, the representation of complete and versioned proposition sets, and the packaging of review provenance and rights decisions for exchange. These questions form the basis for further alignment with ECHOES.
+The revised examples also demonstrate why a digital twin should not be conflated with its digital representations. The Dēliņi farmhouse has its own digital twin, while the frontal and oblique photographic works can have independently maintained twins and multiple persistent file manifestations. A JPEG may provide evidence about the farmhouse while also being a manifestation of a separately identifiable photographic work.
 
-## Proposed solutions and open questions for ECHOES interoperability
+Our immediate objective is to determine which of these relationships can be expressed using existing HDT-O classes and properties, which require agreed implementation conventions, and which reveal conceptual gaps that may justify ontology extensions. The examples are therefore offered as a basis for technical consultation and collaborative validation rather than as a final interoperability model.
 
-The Finno-Ugric Data Sharing Space (FUDSS) provides an operational environment for creating, reviewing, maintaining and exchanging knowledge about cultural heritage. Wikibase maintains persistent knowledge resources, while Betwixt supports the production, review and provenance-aware publication of propositions.
+# Proposed solutions and open questions for ECHOES interoperability
 
-We have developed three complementary RDF examples for the Dēliņi farmhouse:
-
-- [Native Wikibase representation](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/wikibase-Q7328.ttl)
-- [Intermediate Wikibase/HDT-O representation](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/intermediate-Q7328.ttl)
-- [HDT-O/CIDOC CRM semantic projection](https://github.com/dataobservatory-eu/finfair-data-exchange/blob/main/ttl/hdt-Q7328.ttl)
-
-These examples demonstrate proposed modelling patterns but have not yet been validated against a complete, authoritative HDT-O exchange specification.
-
-The following questions distinguish between approaches for which we offer an implementation proposal and issues that remain open for discussion with ECHOES.
+The Finno-Ugric Data Sharing Space (FUDSS) provides an operational environment for creating, reviewing, maintaining and exchanging knowledge about cultural heritage. The Dēliņi examples allow us to formulate a set of specific implementation proposals and questions for ECHOES. The status descriptions below indicate our current assessment, not a claim that the proposed solutions have been formally accepted or validated.
 
 ### 1. Operational Wikibase items as Heritage Digital Twins
 
-**Status: Proposed solution — ontology alignment to be confirmed.**
+**Status: Proposed implementation pattern — ontology alignment to be confirmed.**
 
-We propose treating existing Wikibase items as operational instances of `HC2 Heritage Digital Twin`. For example, the Dēliņi farmhouse (`Q7328`) retains its operational identity, while the physical farmhouse (`Q7376`) is separately represented as an `HC1 Heritage Entity`.
+We propose retaining existing Wikibase items as operational identifiers of `HC2 Heritage Digital Twin` resources. For example, the Dēliņi farmhouse (`Q7328`) retains its established operational identity, while the physical farmhouse (`Q7376`) is separately represented as an `HC1 Heritage Entity`. The relationship is expressed through `HP1 has digital twin`.
 
-The relationship is expressed through `HP1 has digital twin`. This allows curators to maintain familiar Wikibase records without directly managing every distinction required by HDT-O.
+This allows curators to work with familiar Wikibase records while semantic projection provides the distinctions needed for ontology-aligned exchange. The projection preserves the original identifiers and does not require all `HC1` resources to be separately maintained as user-facing records.
 
-The RDF projection materialises the relevant ontology classes and relationships while preserving the existing operational identifiers.
+**Questions for ECHOES:** Is this approach compatible with the intended identity and lifecycle semantics of `HC2`? Are there additional requirements for establishing, maintaining or exchanging the identity of a Heritage Digital Twin beyond the relationships illustrated here?
 
-**Question for ECHOES:** Is this approach compatible with the intended identity and lifecycle semantics of `HC2`? Are there additional requirements for identifying, maintaining or exchanging a digital twin beyond the relationships illustrated in our examples?
+### 2. Photographic works and persistent digital manifestations
 
-### 2. Photographic works, digital twins and digital representations
+**Status: Proposed implementation pattern — representation semantics require confirmation.**
 
-**Status: Partially resolved — representation semantics remain open.**
+The revised Dēliņi example distinguishes the photographic work, its digital twin and its fixed digital manifestations. The frontal and oblique photographic twins retain their Reprexbase identifiers (`Q7362` and `Q7363`). Their published JPEGs are separately identified and provisionally classified as both `HC7 Digital Audiovisual Object` and `HC15 Persistent Digital Object`.
 
-Our Dēliņi example distinguishes three resources:
+We propose that this dual classification describes two complementary characteristics of the same digital manifestation, without requiring separate `HC7` and `HC15` resources. It also allows individual files to be assigned content-derived identifiers while preserving the identity of the photographic work independently of its encodings.
 
-- The independently identifiable photographic work.
-- Its digital twin, maintaining evolving knowledge about the work.
-- Its digital representations, such as RAW, TIFF and JPEG files.
-
-The two photographic twins retain their Reprexbase identifiers (`Q7362` and `Q7363`). Their published JPEGs are modelled separately as `HC7` digital visual objects, a subclass of `HC5 Digital Representation` in the newer HDT-O specification.
-
-This avoids treating each file rendition as a separate photographic work or digital twin.
-
-However, our example provisionally classifies the photographic works as `HC1 Heritage Entity`. This may not be appropriate for contemporary works that have not acquired recognised heritage significance.
+The example uses `HP9` for the JPEG's visual depiction of the farmhouse and introduces application-specific relationships between the photographic work, its twin and its manifestations.
 
 **Questions for ECHOES:**
 
-- Can a photographic work have its own `HC2` digital twin while its JPEG also represents another heritage entity?
-- Does `HP22 represents` express both the digital embodiment of a photographic work and the depiction of a physical heritage object, or should different properties be used?
-- Is there a preferred HDT-O relationship between a photographic twin and its digital representations?
+- Is dual classification as `HC7` and `HC15` appropriate for a fixed photographic manifestation, including RAW originals and rendered derivatives?
+- Is `HP9` the appropriate property for expressing that a digital photograph depicts a physical heritage entity?
+- Does HDT-O provide a preferred relationship between a photographic work and its individual digital manifestations, or between a photographic twin and those manifestations?
+- How should persistent file identities and content-derived identifiers, including ISCC, be represented in an interoperable HDT-O exchange?
 
 ### 3. Extending digital twinning beyond recognised heritage
 
-**Status: Open proposal — requires conceptual agreement.**
+**Status: Open conceptual proposal.**
 
-We propose generalising the digital-twinning mechanism by introducing a `Digital Twin` superclass, with `HC2 Heritage Digital Twin` as a heritage-specific subclass.
+Our current example provisionally classifies contemporary photographic works as `HC1 Heritage Entity` so that their digital twins can be represented as `HC2`. This is a practical accommodation for testing the existing ontology, but it raises a broader conceptual question.
 
-This would allow contemporary photographs, musical compositions, sound recordings and other cultural works to have independently maintained digital twins without requiring their prior classification as heritage.
+Contemporary photographs, musical compositions, sound recordings and other intellectual creations may require independently maintained knowledge, provenance and rights governance before they acquire recognised heritage significance. Their digital twins should not necessarily depend on an initial classification of the underlying works as heritage.
 
-If such a work subsequently acquires recognised heritage significance, its existing twin could receive the more specific `HC2` classification while preserving its identity and knowledge history.
+We therefore propose considering a more general `Digital Twin` superclass, with `HC2 Heritage Digital Twin` as its heritage-specific subclass. This would allow a contemporary cultural work to maintain a digital twin throughout its lifecycle and subsequently acquire a more specific heritage classification without changing its identity or losing its knowledge history.
 
-This is a proposed extension rather than an existing HDT-O modelling pattern.
+This is a proposed extension rather than a claim about the existing HDT-O class hierarchy.
 
-**Question for ECHOES:** Would a general `Digital Twin` superclass be compatible with the intended development of HDT-O? If not, is there another recommended mechanism for maintaining independently governed digital twins of contemporary cultural works?
+**Question for ECHOES:** Would a general `Digital Twin` superclass be compatible with the intended development of HDT-O? If not, what mechanism would be preferable for independently governed digital twins of contemporary cultural works?
 
 ### 4. Reviewed propositions and persistent proposition sets
 
-**Status: Proposed solution — exchange representation remains open.**
+**Status: Proposed modelling pattern — persistence and exchange representation remain open.**
 
-Betwixt supports the creation, examination, correction and review of candidate propositions. Accepted propositions can be published as ordinary Wikibase statements, while the review datasets preserve their evidence, decisions and provenance.
+Betwixt supports the creation, inspection, correction and review of candidate propositions. Accepted propositions can be published as operational Wikibase statements, while review datasets preserve the evidence, decisions and provenance associated with their production.
 
-We propose representing the accepted knowledge of a digital twin through persistent `HC16 Heritage Proposition Set` instances, connected to the twin using `HP33 contains`.
+We propose representing persistent states of accepted knowledge through `HC16 Heritage Proposition Set` resources associated with a digital twin using `HP33`. The Dēliņi examples use version-labelled proposition-set identifiers and application-specific RDF reification to demonstrate this arrangement.
 
-The Dēliņi example illustrates an `HC16` proposition set containing the assertion that the physical farmhouse is heritage of the Livonians.
-
-For demonstration purposes, individual propositions are represented through RDF statement reification and an application-specific `ex:hasProposition` property. We do not propose these constructs as mandatory HDT-O vocabulary.
+However, `HC16` is a specialisation of `HC15`. Its use therefore requires more than identifying a collection of statements: the complete proposition set must have a persistent identity and a defined, fixed content. The current examples do not yet implement these requirements.
 
 **Questions for ECHOES:**
 
 - What is the recommended interoperable representation of the complete contents of an `HC16` proposition set?
-- Should proposition sets be exchanged as named graphs, persistent RDF resources, or another specified structure?
-- How should the identity and persistence of a proposition set be established when its contents are serialised in different formats?
+- Should proposition sets be represented as named graphs, independently identified RDF resources, persistent serialisations or another specified structure?
+- How should their identity and persistence be established when the same propositions can be serialised in different RDF formats?
+- Are there recommended mechanisms for connecting individual reviewed propositions to an `HC16` set without prescribing a particular application-level review vocabulary?
 
 ### 5. Current, former and rejected propositions
 
-**Status: Partially resolved — interpretation of `HP34` remains open.**
+**Status: Proposed interpretation — lifecycle semantics require confirmation.**
 
 Our workflow distinguishes candidate propositions, accepted propositions, superseded propositions and propositions rejected during review.
 
-We propose that only accepted knowledge enters the current proposition sets of a digital twin. When an accepted proposition set is replaced, the former set remains identifiable as part of the twin's history.
+We propose that only accepted knowledge enters the current proposition sets of a digital twin. When an accepted set is replaced, the former set remains identifiable as part of the twin's history. Candidate or rejected propositions that were never accepted remain in the Betwixt review record rather than automatically becoming historical contents of the digital twin.
 
-Candidate propositions that were never accepted remain in the Betwixt review record rather than automatically becoming historical contents of the digital twin.
+This separates the history of knowledge production from the history of knowledge maintained by the twin. The current RDF examples demonstrate `HP33` but do not yet implement the replacement or historical relationships.
 
-This interpretation separates the history of knowledge production from the history of knowledge maintained by the digital twin.
-
-**Question for ECHOES:** Does `HP34 contained` refer specifically to proposition sets that previously formed part of a digital twin, or is it also intended to represent candidate or rejected proposition sets that were never accepted into the twin?
+**Question for ECHOES:** Does `HP34` refer specifically to proposition sets formerly contained in a digital twin, or can it also describe candidate or rejected proposition sets that were never accepted into the twin?
 
 ### 6. Provenance of reviewed knowledge
 
-**Status: Proposed solution — HDT-O integration remains open.**
+**Status: Proposed operational approach — HDT-O integration remains open.**
 
-We use PROV-O to describe the agents, activities and evidence involved in producing and reviewing propositions.
+We use PROV-O to describe the agents, activities and evidence involved in producing and reviewing propositions. Betwixt review documents can be maintained as persistent digital resources, while accepted proposition sets may be derived from one or more review activities.
 
-Betwixt review documents can be maintained as persistent digital resources, while accepted proposition sets are derived from one or more review activities. This allows different reviewers and sources to contribute to the knowledge eventually maintained by a digital twin.
+This permits the provenance of a knowledge claim to be maintained separately from its current operational assertion. It also allows different reviewers and sources to contribute to knowledge subsequently maintained by a digital twin.
 
-We propose retaining this review history independently of the current Wikibase statements and linking it to the resulting `HC16` proposition sets.
+The revised Dēliņi examples identify propositions but do not yet represent their complete review activities, evidence or competent warrants.
 
-**Question for ECHOES:** Is PROV-O sufficient for expressing the derivation and review provenance of `HC16` proposition sets from persistent review documents (`HC15`), or does HDT-O envisage more specific relationships or constraints for these activities?
+**Question for ECHOES:** Is PROV-O sufficient for representing the derivation and review provenance of `HC16` proposition sets from persistent review documents, potentially classified as `HC15`, or does HDT-O envisage more specific relationships and constraints?
 
 ### 7. Physical composition and digital twin composition
 
-**Status: Partially resolved — composition semantics remain open.**
+**Status: Partially modelled — composition semantics remain open.**
 
-Our examples distinguish physical part–whole relationships from digital twin composition.
+The Dēliņi farmhouse is physically part of the Dēliņi farmstead. Our projection represents this relationship using CIDOC CRM `P46i forms part of`. The farmhouse and farmstead also have independently identified digital twins, each potentially maintaining its own proposition sets, representations and governance arrangements.
 
-The Dēliņi farmhouse is physically part of the Dēliņi farmstead. We represent this relationship using CIDOC CRM `P46i forms part of`, rather than treating physical composition and digital twin composition as identical.
-
-The farmhouse and farmstead also have independently identified digital twins, each potentially maintaining its own proposition sets and governance arrangements.
+We do not assume that physical part–whole relationships automatically determine digital twin composition. A physical object may participate in different documentary, historical or scholarly contexts, and its digital twin may therefore participate in several investigative environments.
 
 **Questions for ECHOES:**
 
 - Is `HP3` intended to represent independently established digital twin composition rather than automatically following physical part–whole relationships?
-- Does a component digital twin contribute its `HC16` proposition sets to the composite twin, or are the proposition sets maintained independently?
+- Does a component digital twin contribute its `HC16` proposition sets to a composite twin, or are those sets maintained independently?
 - Can a digital twin participate in multiple composite twins without duplicating its propositions?
 
-The last question is particularly relevant to archival records, which may participate in different, overlapping or changing archival arrangements.
+The last question is particularly relevant to archival records that participate in overlapping or changing archival arrangements.
 
 ### 8. Digital twin snapshots, revisions and persistence
 
 **Status: Open implementation question.**
 
-Our Wikibase environment maintains evolving statements and revision histories, while Betwixt preserves persistent review datasets and their provenance.
+Our Wikibase environment maintains evolving statements and revision histories, while Betwixt can preserve review datasets and their provenance. These mechanisms provide a basis for reconstructing changes in accepted knowledge.
 
-These mechanisms provide a basis for reconstructing changes in accepted knowledge. However, we have not yet established a complete HDT-O snapshot mechanism or demonstrated that Wikibase revisions and Betwixt records alone satisfy the intended semantics of `HP28`.
+However, the Dēliņi RDF examples do not yet establish a complete snapshot mechanism or demonstrate that Wikibase revisions and Betwixt records satisfy the intended semantics of `HP28`. Similarly, the version-labelled `HC16` proposition sets remain illustrative until their complete persistent contents can be established.
 
 **Questions for ECHOES:**
 
 - Are persistent snapshots an essential requirement of an `HC2` digital twin or an optional mechanism?
-- What constitutes a complete snapshot: the current proposition sets, the represented digital resources, the provenance of their production, or some combination?
-- Is there a recommended way to package and exchange the current state of a digital twin together with its historical states and review provenance?
+- What constitutes a complete snapshot: the current proposition sets, digital representations, provenance, governance information or some specified combination?
+- How should snapshots relate to independently persistent `HC15` manifestations and `HC16` proposition sets?
+- Is there a recommended exchange package for current and historical states of a digital twin?
 
 ### 9. Interoperability with archival and library ontologies
 
 **Status: Open interoperability question.**
 
-Our heritage data includes archival records, record sets, library resources and documentary collections whose semantics are often more appropriately expressed through Records in Contexts (RiC-O) or DCTERMS than through CIDOC CRM alone.
+Our heritage data includes archival records, record sets, bibliographic resources and documentary collections whose semantics may be more appropriately expressed through Records in Contexts (RiC-O) or DCTERMS than through CIDOC CRM alone.
 
-We do not propose replacing these domain descriptions with HDT-O classes. Instead, we envisage preserving their original semantic structures while establishing the relationships needed for participation in Heritage Digital Twins.
+We do not propose replacing these domain descriptions with HDT-O classes. Instead, we envisage preserving their established semantic structures while identifying the relationships needed for participation in Heritage Digital Twins.
 
 This is particularly important for archival provenance, record aggregation, changing arrangements and the distinction between records and the entities they document.
 
@@ -756,69 +777,69 @@ This is particularly important for archival provenance, record aggregation, chan
 
 **Status: Proposed operational approach — ontology alignment remains open.**
 
-We propose maintaining independently identifiable digital twins for documentary works when their authorship, provenance, rights or permitted uses require investigation and governance.
+We propose maintaining independently identifiable digital twins for documentary works when their authorship, provenance, interpretation, rights or permitted uses require investigation and governance.
 
-A photographic work may have RAW, TIFF, JPEG and thumbnail representations, each subject to different access and reuse conditions. Similarly, a sound recording may be available for private listening, computational research or public performance under different permissions.
+The frontal and oblique photographs illustrate why rights concerning an intellectual work should be distinguished from access and reuse conditions concerning its digital manifestations. An original RAW file may be retained for authorised inspection, while a JPEG rendition may be approved for public distribution. Other renditions may be subject to different restrictions or permissions.
 
-Our approach does not assign a single rights status to the entire digital twin. Instead, Betwixt supports the review of propositions about particular uses, permissions, restrictions, rights holders and supporting evidence.
+These conditions may involve copyright, neighbouring rights, personality rights, privacy, consent, contractual obligations and ethical considerations. They cannot always be reduced to a single licence attached to the photographic work or its digital twin.
 
-These propositions can be revised as new information or permissions become available.
+Our proposed model therefore associates rights-related propositions with the relevant subjects: the photographic work, its digital manifestations, the agents holding rights or responsibilities, and the activities or uses being authorised. Betwixt can support the review and revision of these propositions as new evidence or permissions become available.
+
+The current RDF examples establish the identities and relationships needed for such governance but do not yet encode specific rights decisions or permissions.
 
 **Questions for ECHOES:**
 
 - Is there a recommended HDT-O integration pattern for rights and permissions expressed through ODRL, PROV-O or related vocabularies?
-- How should rights concerning an underlying cultural work be distinguished from rights and permitted uses concerning its individual digital representations?
-- Can purpose-specific rights decisions be maintained as reviewed propositions within an `HC16` set, including uncertainty, restrictions and the authority responsible for the decision?
+- How should rights in an underlying cultural work be distinguished from permissions and restrictions applying to particular `HC7`/`HC15` manifestations?
+- Can purpose-specific rights decisions be maintained as reviewed propositions within `HC16` sets, including uncertainty, restrictions, supporting evidence and the authority responsible for the decision?
 
 ## Proposed validation and interoperability work
 
 We do not envisage replacing Wikibase with an ECHOES-specific repository. Instead, we propose developing a reproducible RDF projection from the operational Wikibase and Betwixt environment into the ontology structures expected by ECHOES.
 
-The Dēliņi examples provide an initial test case for this work. We would welcome collaboration on specifying and validating the mapping.
+The Dēliņi examples provide a deliberately small initial test case. The corrected intermediate and final Turtle files establish a concrete starting point for discussion, but syntax validity should not be confused with ontology conformance or a completed exchange implementation.
 
-To proceed reliably, we would particularly appreciate:
+For the next stage, we would particularly appreciate:
 
-1.  **Authoritative ontology releases.** A versioned, machine-readable HDT-O specification with stable namespace IRIs, class and property definitions, and documented changes between releases.
+1. **Authoritative ontology releases.** A versioned, machine-readable HDT-O specification with stable namespace IRIs, class and property definitions, and documented changes between releases.
 
-2.  **SHACL validation shapes.** Reference shapes describing the structural and semantic constraints expected of HDT-O-compatible RDF exchange.
+2. **SHACL validation shapes.** Reference shapes describing the structural and semantic constraints expected of HDT-O-compatible RDF exchange, including constraints on `HC7`, `HC15`, `HC16` and their relevant relationships.
 
-3.  **Positive and negative test cases.** Representative examples with expected validation outcomes, including cases involving multiple digital twins, proposition sets, representations and provenance.
+3. **Positive and negative test cases.** Representative examples with expected validation outcomes, including dual-classified digital manifestations, independently maintained photographic twins, proposition sets and provenance.
 
-4.  **EARL reporting guidance.** A recommended approach for reporting which interoperability and conformance tests our projection passes or fails.
+4. **EARL reporting guidance.** A recommended approach for reporting which interoperability and conformance tests our projection passes or fails.
 
-5.  **A complete exchange example.** A valid Heritage Digital Twin exchange package illustrating current and historical proposition sets, digital representations, provenance and, where applicable, rights information.
+5. **A complete exchange example.** A valid Heritage Digital Twin exchange package illustrating current and historical proposition sets, persistent digital representations, provenance and, where applicable, rights information.
 
-6.  **A collaborative mapping exercise.** We propose using the Dēliņi farmhouse and its photographic documentation as a small reference case for jointly testing the projection, identifying ontology gaps and documenting agreed interoperability patterns.
+6. **A collaborative mapping exercise.** We propose using the Dēliņi farmhouse and its frontal and oblique photographic documentation as a small reference case for jointly testing the projection, identifying ontology gaps and documenting agreed interoperability patterns.
 
-Our immediate objective is not to extend HDT-O wherever an existing class or property can already express the required meaning. We seek to distinguish between requirements that can be met through documented mappings, requirements that need additional implementation conventions, and genuine conceptual gaps that may justify extending the ontology.
+Our immediate objective is not to extend HDT-O wherever existing classes and properties can already express the required meaning. We seek to distinguish requirements that can be met through documented mappings, requirements that need additional implementation conventions, and genuine conceptual gaps that may justify extending the ontology.
 
-This would allow the Finno-Ugric Data Sharing Space to serve as a practical interoperability demonstrator for ECHOES while preserving its independently governed operational knowledge environment.
+The Finno-Ugric Data Sharing Space could thereby serve as a practical interoperability demonstrator for ECHOES while preserving its independently governed operational knowledge environment.
 
-# Extending Heritage Digital Twins to full life-cycle of cultural creation and preservation
+# Extending Heritage Digital Twins to the full lifecycle of cultural creation and preservation
 
-The FinFAIR project commits Reprex to developing **rights-aware Heritage Digital Twins**, incorporating legal, ethical, and institutional governance into the evolving knowledge maintained about cultural heritage entities.
+The FinFAIR project commits Reprex to developing **rights-aware Heritage Digital Twins**, incorporating legal, ethical and institutional governance into the evolving knowledge maintained about cultural heritage entities.
 
-Our work suggests that the same requirements arise in the management of contemporary cultural works. Photographs, musical compositions, recorded performances, and other intellectual creations have identifiable subjects, persistent identities, evolving bodies of knowledge, and rights that must be investigated and governed throughout their lifecycles.
+Our experience suggests that similar requirements arise throughout the lifecycle of contemporary cultural works. Photographs, musical compositions, recorded performances and other intellectual creations have identifiable subjects, persistent identities, evolving bodies of knowledge and rights that may require investigation and governance before the works are formally recognised as cultural heritage.
 
-We therefore propose introducing a more general **Digital Twin (`DT`) class**, of which `HC2 Heritage Digital Twin` would be a specialised subclass. This would allow the operational principles of HDT-O to be applied to cultural works without requiring them first to be recognised as cultural heritage.
+The Dēliņi farmhouse and its frontal and oblique photographs illustrate this distinction. The farmhouse is a physical heritage entity. The photographs are independently identifiable intellectual creations that also serve as evidence about the farmhouse. Each can be investigated, described and governed through its own digital twin.
 
-The Dēliņi farmhouse and the two photographic works depicting it illustrate this requirement. The farmhouse is a physical heritage entity, whereas the photographs are independently identifiable intellectual creations. Each can be investigated, described, reviewed, and governed through its own digital twin.
+The photographs originate as Olympus RAW digital negatives from which TIFF, JPEG and other renditions may be produced. These fixed manifestations can be modelled as `HC7` and `HC15` resources, while the photographic works retain their intellectual identities independently of particular files. The digital twins maintain evolving knowledge about the works, including their creation, interpretation, provenance, rights and permitted uses.
 
-The photographs originate as high-resolution Olympus RAW digital negatives, from which TIFF, JPEG, thumbnail, and other renditions can be produced. These digital representations do not constitute separate photographic works. They provide different means of inspecting and using the same intellectual creation.
+We therefore distinguish three levels:
 
-The distinction is therefore between three levels:
+1. **The represented entity:** a physical heritage object or independently identifiable intellectual work, such as a farmhouse, photograph, musical composition or recorded performance.
+2. **Its Digital Twin (`DT`):** an evolving, governed environment for maintaining and investigating knowledge about that entity, including propositions concerning its identity, interpretation, provenance, rights and permitted uses.
+3. **Its persistent digital manifestations:** particular files, renditions or other digital resources used to inspect, analyse, reproduce or communicate the represented entity, potentially classified as both `HC7` and `HC15` where appropriate.
 
-1.  **The represented entity:** a physical object or identifiable intangible work, such as a farmhouse, photograph, musical composition, or recorded performance.
-2.  **Its Digital Twin (`DT`):** an evolving, governed body of knowledge about that entity, including propositions concerning its identity, interpretation, provenance, rights, and permitted uses.
-3.  **Its digital representations:** particular files, renditions, or other digital resources used to inspect, analyse, reproduce, or communicate the represented entity.
+For recognised heritage entities, the digital twin can be classified as `HC2 Heritage Digital Twin`. For other cultural works, we propose considering a more general `Digital Twin` class, with `HC2` as its heritage-specific subclass. If a cultural work subsequently acquires recognised heritage significance, its existing twin could receive the more specific classification without changing its identity or reconstructing its knowledge history.
 
-For recognised heritage entities, the Digital Twin can be classified as `HC2 Heritage Digital Twin`. Other cultural works can have Digital Twins without this additional heritage classification. If a cultural work subsequently acquires recognised heritage significance, its existing digital twin can acquire the more specific `HC2` classification without changing its identity or reconstructing its knowledge history.
+This proposal does not require every digital file to become a digital twin. Nor does it diminish the heritage-specific concepts of HDT-O. It seeks to generalise the digital-twinning mechanism while retaining Heritage Digital Twins as a specialised application.
 
-This distinction is particularly important for rights governance. The legal and ethical conditions governing a photographic work, its individual renditions, and its use as evidence in the investigation of another heritage entity may differ. Maintaining a separate digital twin for the photographic work allows these conditions to be investigated and updated independently.
+The extension would be particularly useful for rights-aware governance. The rights associated with a photographic work, its original RAW file, its published JPEG and its use as evidence in the investigation of another heritage entity may differ. Maintaining a separate digital twin for the photographic work allows these conditions to be investigated and revised independently of the farmhouse's digital twin.
 
-Our proposal is therefore not to treat every digital file as a digital twin, nor to remove the heritage-specific concepts of HDT-O. Rather, it is to *generalise the digital-twinning mechanism while retaining Heritage Digital Twins as a specialised application.*
-
-Such an extension would make the approach applicable across the lifecycle of cultural production, from the creation and governance of contemporary works to their eventual preservation and interpretation as cultural heritage.
+We offer this as a conceptual proposal for consultation with ECHOES, not as an already established extension of HDT-O. Our aim is to determine whether the existing ontology can accommodate these requirements through agreed modelling patterns or whether a more general digital-twinning concept would provide a clearer foundation for managing cultural works throughout their creation, preservation and eventual recognition as heritage.
 
 ### Rights-aware digital twins of documentary evidence
 

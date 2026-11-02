@@ -30,8 +30,6 @@
 # Describes the RDF export, not the heritage entity,
 # digital twin, photographic works or image files.
 #
-# The dataset URI is illustrative until verified against
-# the actual Reprexbase RDF export.
 # ============================================================
 
 data:Q7328
@@ -64,19 +62,24 @@ ex:hasProposition
     a rdf:Property ;
     rdfs:label "has proposition"@en ;
     rdfs:comment
-        "Application-specific membership relationship
+        """Application-specific membership relationship
          between a persistent proposition set and an
-         individually identified proposition."@en .
+         individually identified proposition."""@en .
 
 ex:hasDigitalRepresentation
     a rdf:Property ;
     rdfs:label "has digital representation"@en ;
     rdfs:comment
-        "Application-specific relationship between a
+        """Application-specific relationship between a
          digital twin and a digital representation
          associated with its subject. Not equivalent
-         to HDT-O HP22."@en .
+         to HDT-O HP22."""@en .
 
+
+ex:hasManifestation
+    a rdf:Property ;
+    rdfs:label "has fixed digital manifestation"@en ;
+    rdfs:comment "Links a photographic work to a fixed file rendition."@en .
 
 # ============================================================
 # 3. HERITAGE ENTITIES AND DIGITAL TWINS
@@ -158,12 +161,12 @@ wd:Q7328
     p:P14
         s:Q7328-1a375ad3-4412-55f2-3e7e-c6d0f2354e31 .
 
-# The original P484 assertion on Q7328 is not reproduced
-# because its direction conflicts with the property meaning.
-#
-# The correct physical-to-digital relationship is expressed
-# above using HP1. Any source correction should be made
-# separately in Wikibase.
+# The source export reportedly contains a P484 assertion on
+# Q7328 with a disputed direction. Its exact object has not
+# been supplied here, so it cannot be reproduced faithfully.
+# Restore the exact source triple from the native export before
+# claiming this intermediate graph preserves every assertion.
+# Do not silently replace source assertions with projections.
 
 
 # ============================================================
@@ -218,14 +221,17 @@ wd:Q7363
 
 
 # ============================================================
-# 6. HC7 DIGITAL VISUAL OBJECTS
+# 6. HC7 / HC15 FIXED DIGITAL VISUAL OBJECTS
 #
 # HC7 is a subclass of HC5 Digital Representation
 # in the newer HDT-O definition.
 #
-# The JPEGs are representations, not separate digital twins.
+# The JPEGs are both visual representations (HC7) and
+# persistent fixed digital objects (HC15), not separate twins.
 #
-# HP22 connects a digital representation to an HC1 entity.
+# HP9 is used for visual depiction of the physical farmhouse.
+# ex:hasManifestation links the photographic work to its file.
+# The exact ontology constraints of HP9 need confirmation.
 #
 # The Commons URLs identify file-description pages,
 # not necessarily the underlying image bytes.
@@ -234,11 +240,10 @@ wd:Q7363
 # 6.1 Frontal JPEG.
 
 ex:frontal-jpeg
-    a hdt:HC7 ;
+    a hdt:HC7, hdt:HC15 ;
     rdfs:label
         "Published JPEG: frontal view with well"@en ;
-    hdt:HP22 wd:Q7376,
-             ex:frontal-photographic-work ;
+    hdt:HP9 wd:Q7376 ;
     schema:url
         <https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_frontal_view_with_well.jpg> .
 
@@ -246,14 +251,23 @@ ex:frontal-jpeg
 # 6.2 Oblique JPEG.
 
 ex:oblique-jpeg
-    a hdt:HC7 ;
+    a hdt:HC7, hdt:HC15 ;
     rdfs:label
         "Published JPEG: oblique view"@en ;
-    hdt:HP22 wd:Q7376,
-             ex:oblique-photographic-work ;
+    hdt:HP9 wd:Q7376 ;
     schema:url
         <https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_oblique_view.jpg> .
 
+
+# The work-to-manifestation relation is distinct from depiction.
+ex:frontal-photographic-work
+    ex:hasManifestation ex:frontal-jpeg .
+
+ex:oblique-photographic-work
+    ex:hasManifestation ex:oblique-jpeg .
+
+# No ORF/TIFF resources or ISCC values are asserted: the actual
+# files and computed identifiers have not been provided.
 
 # ============================================================
 # 7. PHOTOGRAPHIC TWINS AND THEIR REPRESENTATIONS
@@ -261,8 +275,8 @@ ex:oblique-jpeg
 # These relationships identify which digital representations
 # are associated with each photographic twin.
 #
-# They are distinct from HP22, which expresses what
-# heritage entity the digital representation represents.
+# They are distinct from HP9 (depiction) and
+# ex:hasManifestation (work-to-file relationship).
 # ============================================================
 
 wd:Q7362
@@ -383,7 +397,7 @@ ex:delini-farmstead-membership-claim
 ex:frontal-representation-claim
     a rdf:Statement ;
     rdf:subject ex:frontal-jpeg ;
-    rdf:predicate hdt:HP22 ;
+    rdf:predicate hdt:HP9 ;
     rdf:object wd:Q7376 .
 
 
@@ -401,7 +415,7 @@ ex:frontal-rendition-claim
 ex:oblique-representation-claim
     a rdf:Statement ;
     rdf:subject ex:oblique-jpeg ;
-    rdf:predicate hdt:HP22 ;
+    rdf:predicate hdt:HP9 ;
     rdf:object wd:Q7376 .
 
 
@@ -422,7 +436,7 @@ ex:oblique-rendition-claim
 # - preservation of existing Reprexbase QIDs;
 # - distinction between HC1 and HC2;
 # - explicit HC1-to-HC2 relationships through HP1;
-# - HC7 representations of heritage entities;
+# - HC7 / HC15 dual typing of fixed JPEG manifestations;
 # - current HC16 proposition sets through HP33;
 # - application-specific identification of propositions;
 # - separation of source Wikibase assertions from
@@ -436,10 +450,12 @@ ex:oblique-rendition-claim
 # - proposition-set replacement through HP32;
 # - digital twin snapshots;
 # - rights, licences and permitted uses of JPEGs;
-# - technical identifiers for original RAW/TIFF files;
+# - original ORF files, TIFF derivatives and verified ISCCs;
+# - proof of bit-level fixation and complete HC16 contents;
 # - complete HDT-O exchange and SHACL conformance.
 #
-# The HC1 classification of photographic works and the
-# use of HP22 for both a photographic work and its subject
-# remain modelling assumptions requiring confirmation.
+# The HC1 classification of photographic works and
+# HDT-O property constraints for HP9 require confirmation.
+# HC16 membership is illustrative; no fixed complete
+# proposition-set serialization is established here.
 # ============================================================
