@@ -193,9 +193,8 @@ To demonstrate this distinction, we also created the [physical Dēliņi farmhous
 The essential operational relationships can be illustrated as follows:
 
 ```{text}
-PREFIX wd:  <https://reprexbase.eu/fu/entity/>
-PREFIX wdt: <https://reprexbase.eu/fu/prop/direct/>
-
+@prefix wd: <https://reprexbase.eu/fu/entity/> .
+@prefix wdt: <https://reprexbase.eu/fu/prop/direct/> .
 # Physical farmhouse and its digital twin
 wd:Q7376 wdt:P484 wd:Q7328 .
 wd:Q7328 wdt:P482 wd:Q7376 .
@@ -214,9 +213,8 @@ Our preferred approach is therefore to preserve the established operational iden
 The projection must also account for differences between statements about the operational digital twin and statements about the heritage entity it represents. For example, the operational Wikibase item for the farmhouse records that it is heritage of the [Livonians (Q46)](https://reprexbase.eu/fu/Item:Q46), using the local property `P480`:
 
 ```{text}
-PREFIX wd:  <https://reprexbase.eu/fu/entity/>
-PREFIX wdt: <https://reprexbase.eu/fu/prop/direct/>
-
+@prefix wd: <https://reprexbase.eu/fu/entity/> .
+@prefix wdt: <https://reprexbase.eu/fu/prop/direct/> .
 wd:Q46 wdt:P14 wd:Q33 .
 wd:Q7328 wdt:P480 wd:Q46 .
 ```
@@ -246,258 +244,15 @@ This approach depends on the possibility of resolving the shorthand without ambi
 
 The central principle is that *ontological distinctions need not correspond to separately maintained user-facing records*. A Wikibase item can function as a pragmatic shorthand for a more fully articulated HDT-O representation, provided that the underlying distinctions can be reconstructed reliably. Wikibase and Betwixt provide operational environments for maintaining and reviewing knowledge, while semantic projection makes the relevant `HC1` and `HC2` resources, properties and relationships explicit for interoperability.
 
-We believe that our approach reduces rather than introduces confusion for researchers, educators and data stewards. A textile researcher or ethnographer understands that, when working with our Wikibase, Sampo or Betwixt interface, they are not interacting with the physical sash located in the living room of the farmhouse. The digital twin is a volatile digital environment in which we investigate the `HC1` heritage entity indirectly through its `HC2` representation. For ontologists and data engineers, however, it is essential that we can provide an ontologically explicit account distinguishing the farmhouse, its living room and the sash from the digital environment in which they are represented and investigated.
+We believe that our approach reduces confusion rather than introducing it for researchers, educators and data stewards. A textile researcher or ethnographer understands that, when working with our Wikibase, Sampo or Betwixt interface, they are not interacting with the physical sash located in the living room of the farmhouse. The digital twin is a volatile digital environment in which we investigate the `HC1` heritage entity indirectly through its `HC2` representation. For ontologists and data engineers, however, it is essential that we can provide an ontologically explicit account distinguishing the farmhouse, its living room and the sash from the digital environment in which they are represented and investigated.
 
 The following worked example develops this approach using the Dēliņi farmhouse, its photographic documentation and persistent proposition sets, with the native Wikibase RDF, intermediate representation and HDT-O projection provided as separate Turtle files.
-
-Let's try to talk briefer. So HC16 is derived from HC15 but must be expressed in formal language of knowledge representation. That qualifies to parts of our Wikidata items serialised in RDF. However, HC15 is not there yet. So, in a very brief, expalin to me the possible classification of the abstract Oblique photo, its ORF file, and three different manifestation each with an ISCC-instance and ISCC-data identifier derived from the bit-by-bit inspection of the manifestaiton I would distinguish five resources: one photographic work, one RAW original, and three derived manifestations.
-
-Resource
-
-Proposed classification
-
-Identity
-
-Abstract oblique photograph
-
-crm:E36 Visual Item; provisionally HC1
-
-Intellectual identity, independent of file format
-
-Original ORF file
-
-HC7 + HC15
-
-Persistent RAW digital object
-
-Manifestation A (e.g. TIFF)
-
-HC7 + HC15
-
-First persistent rendition
-
-Manifestation B (e.g. JPEG)
-
-HC7 + HC15
-
-Second persistent rendition
-
-Manifestation C (e.g. resized JPEG)
-
-HC7 + HC15
-
-Third persistent rendition
-
-Each of the four files can have its own ISCC-INSTANCE and ISCC-DATA identifiers, calculated from its digital content. These identify properties of the files, not the abstract photograph. ISCC-INSTANCE identifies the exact file bytes; ISCC-DATA is content-derived but should not be treated as an exact byte-for-byte identity test.
-
-Three important distinctions:
-
-HC15 identifies persistent digital objects, not necessarily knowledge representations. An ORF or JPEG can qualify.
-
-HC16 specialises HC15 for persistent proposition sets. A formally expressed RDF proposition set can qualify, but an arbitrary RDF serialisation is not automatically an HC16.
-
-HC1/HC2 concern the photographic work and its digital twin, if we provisionally treat the photograph as heritage. They do not need to be assigned to each file manifestation.
-
-Thus, one photographic work can have multiple HC15 manifestations, each independently identifiable, while retaining a single intellectual identity and potentially a single HC2 digital twin.
-
-The remaining modelling question is the precise property connecting those manifestations to the abstract photographic work.
-
-What is the relationship between HC7 and HC15. What is the pro and con of a dual classification? In HDT-O, HC7 and HC15 are two classifications along different dimensions, not subclasses of one another.
-
-HC7 Digital Audiovisual Object describes what the digital object represents: visual or audiovisual content.
-
-HC15 Persistent Digital Object describes how its identity is fixed: complete bit-level content established at a particular creation moment.
-
-Both descend from crmdig:D1 Digital Object, but through different branches. HDT-O does not declare them disjoint.
-
-Dual classification of oblique_view.jpg ex:oblique-jpeg a hdt:HC7, hdt:HC15 . Advantages
-
-Disadvantages
-
-Captures visual content and bit-level persistence simultaneously
-
-Combines representation-level and file-level identity
-
-No additional resource or relationship needed
-
-Can become awkward when one image has multiple renditions
-
-Each manifestation can have its own ISCC identifiers
-
-Queries about HC7 may return individual files rather than distinct visual works
-
-Simple and compatible with the stated class hierarchy
-
-Requires care when attaching rights, authorship and provenance
-
-My recommendation Use dual classification for each fixed ORF, TIFF or JPEG file, but maintain a separate crm:E36 Visual Item for the abstract photograph.
-
-This gives you three clearly distinguishable levels:
-
-E36 — the photographic work, independent of encoding.
-
-HC7 + HC15 — each persistent digital manifestation.
-
-ISCC identifiers — evidence for the identity and content of each manifestation.
-
-I would introduce separate HC7 and HC15 resources only if we need to model a digital visual representation that persists conceptually across several file versions. Otherwise, that extra distinction adds complexity without much benefit.
-
-So , before we go onto the worked example, I want to put this straight after the following text.
-
-Semantic projection from Wikibase to HDT-O Wikibase can represent knowledge expressed in HDT-O and CIDOC CRM using its own item-and-property model (see [@pfeiffer_representing_2021; @kesaniemi_wb_cidoc_2022]). Ontology classes can be represented as Wikibase items and ontology properties as Wikibase properties. Class hierarchies can be expressed through subclass of relationships, while individual resources can be assigned to classes through instance of relationships. Wikibase statements can also carry qualifiers and references. However, representing an ontology within Wikibase and exporting an ontology-aligned RDF graph are distinct operations: the latter requires explicit mappings between Wikibase identifiers and the corresponding ontology classes, properties and relationships.
-
-Our approach distinguishes the operational representation of heritage knowledge from its ontology-aligned exchange representation. Wikibase allows curators to work with familiar domain-specific classifications and maintain practical descriptions of heritage objects, while documented mappings allow us to project this knowledge into the more explicit conceptual structures of HDT-O and CIDOC CRM3. The operational model does not need to reproduce every ontological distinction as a separately maintained Wikibase item, provided that these distinctions can be reconstructed without ambiguity when required for interoperability.
-
-In the Finno-Ugric Data Sharing Space, curators generally work with one principal Wikibase item for each heritage object or subject of documentation. This item serves as an operational shorthand for descriptions that HDT-O distinguishes between a Heritage Entity (HC1) and its Heritage Digital Twin (HC2). It combines statements about the represented entity with information about its classification, relationships, documentation and supporting evidence. For example, the and are maintained as operational digital twins, while also carrying statements that, in a fully articulated HDT-O representation, concern the underlying heritage entities.
-
-This shorthand does not imply that the heritage entity and its digital twin are ontologically identical. Rather, the operational Wikibase item provides a convenient point of access to information that can be attributed to distinct HC1 and HC2 resources. We do not systematically create and populate both resources as separate user-facing records, because doing so would introduce additional curatorial work, redundancy and complexity without necessarily improving the everyday management of heritage knowledge. Where the distinction can be established unambiguously, however, the corresponding resources and relationships can be made explicit through semantic projection. The operational representation is therefore deliberately less explicit than the exchange representation, but not intended to contradict it.
-
-To demonstrate this distinction, we also created the and as separate HC1 resources. These are connected to their respective digital twins through the Wikibase properties and its inverse . The local Wikibase item represents the HC1 Heritage Entity class. These additional records make explicit a distinction that would otherwise remain implicit in the operational descriptions.
-
-The essential operational relationships can be illustrated as follows:
-
-{text} PREFIX wd: \<\> PREFIX wdt: \<\> \# Physical farmhouse and its digital twin wd:Q7376 wdt:P484 wd:Q7328 . wd:Q7328 wdt:P482 wd:Q7376 . \# Physical farmstead and its digital twin wd:Q7379 wdt:P484 wd:Q5582 . wd:Q5582 wdt:P482 wd:Q7379 .
-
-These explicitly modelled HC1 resources demonstrate that Wikibase can represent the distinction between a heritage entity and its digital twin without requiring a different technical platform. Nevertheless, we regard this as an optional elaboration of the operational model rather than a requirement for every curatorial record. A curator describing the farmhouse generally intends to document the physical building, even though the statements are maintained in a digital information system. Requiring the curator to navigate and maintain two parallel descriptions would often add little practical value. The distinction becomes important when the information is interpreted according to an ontology that assigns different properties and relationships to the heritage entity and its digital twin.
-
-We believe
-
-A building in an open-air museum is itself often a "physical twin" of a cultural heritage building or structure. For the user of our digital twins, it is clear that they are not inspecting the original farmhouse, which was relocated to the open air museum in 1971, and not the carefully maintained phyiscal heritage objects and structures, but its digital twin.
-
-Our preferred approach is therefore to preserve the established operational identifiers and treat their descriptions as shorthand for the corresponding ontological structures. In an HDT-O-aligned projection, the operational Wikibase item can retain its identity as the HC2 digital twin, while the represented HC1 heritage entity is made explicit. The projection may reuse existing HC1 identifiers, as in this example, or materialise the corresponding resources through documented mappings. This allows the exchange representation to distinguish the physical heritage entities from their digital twins without requiring all such distinctions to be separately maintained in the operational application.
-
-The projection must also account for differences between statements about the operational digital twin and statements about the heritage entity it represents. For example, the operational Wikibase item for the farmhouse records that it is heritage of the , using the local property P480:
-
-{text} PREFIX wd: \<\> PREFIX wdt: \<\> wd:Q46 wdt:P14 wd:Q33 . wd:Q7328 wdt:P480 wd:Q46 .
-
-In the operational representation, this statement is attached to the principal Wikibase item because that item serves as the curator's point of access to the farmhouse description. In an HDT-O-aligned representation, however, the heritage relationship concerns the physical farmhouse (HC1), rather than its digital twin (HC2). The semantic projection therefore attributes the relationship to the corresponding heritage entity while preserving the identity of the operational digital twin:
-
-```{text} 
-@prefix wd: \<\> .
-@prefix hdt: \<\> .
-@prefix crm: \<\> .
-wd:Q7376 a hdt:HC1, 
-   crm:E24_Physical_Human-Made_Thing ; 
-   hdt:HP1 wd:Q7328 ; 
-   hdt:HP15 wd:Q46 . 
-   
-wd:Q7328 a hdt:HC2 . wd:Q46 a crm:E74_Group .
-```
-
-
-The hdt: namespace in this illustrative excerpt is a placeholder pending alignment with the authoritative ontology release. The example demonstrates that semantic projection involves more than renaming Wikibase properties. The original statement Q7328 → P480 → Q46 is interpreted as a heritage relationship between the physical farmhouse (Q7376) and the Livonians (Q46), while HP1 explicitly connects the heritage entity to its digital twin. The operational statement is not treated as an erroneous assertion about the digital twin, but as a shorthand whose intended subject can be identified from the modelling context.
-
-This approach depends on the possibility of resolving the shorthand without ambiguity. Some operational statements can be attributed to the heritage entity through straightforward mappings, while others concern the digital twin itself, its documentation, or the processes through which knowledge was produced. Such transformations require documented rules and, where their interpretation is not mechanically determined, appropriate evidence and review. They should not be assumed to be automatically reversible or lossless for every Wikibase statement. Within a defined interoperability profile, however, semantic projection can preserve the relevant identities and meanings while making explicit relationships that remain implicit in the operational application.
-
-The central principle is that ontological distinctions need not correspond to separately maintained user-facing records. A Wikibase item can function as a pragmatic shorthand for a more fully articulated HDT-O representation, provided that the underlying distinctions can be reconstructed reliably. Wikibase and Betwixt provide operational environments for maintaining and reviewing knowledge, while semantic projection makes the relevant HC1 and HC2 resources, properties and relationships explicit for interoperability.
-
-We believe that our approach reduces rather than introduces confusion for researchers, educators and data stewards. A textile researcher or ethnographer understands that, when working with our Wikibase, Sampo or Betwixt interface, they are not interacting with the physical sash located in the living room of the farmhouse. The digital twin is a volatile digital environment in which we investigate the HC1 heritage entity indirectly through its HC2 representation. For ontologists and data engineers, however, it is essential that we can provide an ontologically explicit account distinguishing the farmhouse, its living room and the sash
-
-… I think the argument is coherent, but it currently combines three different questions that should be separated before we write the section:
-
-How we store and distribute media, including access restrictions.
-
-How we classify photographs as documentary works and potentially as heritage entities.
-
-How we identify individual digital files within an evolving digital twin.
-
-The strongest way to present this is to move from practical implementation to ontological interpretation.
-
-1.  Media distribution and access governance Our Wikibase is not exclusively a graph of textual statements. It also provides access to photographs, sound recordings, videos and other digital resources.
-
-We use Wikimedia Commons, and where possible Europeana, for material that can be openly distributed under appropriate licences, such as CC BY or CC BY-SA. Other media are maintained through the local Wikibase media extension or alternative access arrangements.
-
-The reason is not simply copyright. A resource may involve several overlapping legal and ethical considerations: copyright, neighbouring rights, personality rights, privacy, consent and culturally sensitive information. A single Creative Commons licence may not adequately express all these conditions.
-
-Important distinction: A media file can be linked to a knowledge graph without its digital content being represented as an independently identified graph resource. We should distinguish the presence of a media attachment from the explicit semantic modelling of that attachment.
-
-I would avoid saying that the graph is multimodal only when files are directly represented as nodes. The system is multimodal in either case; the difference is the depth of semantic integration.
-
-2.  Two different photographic situations I agree with your distinction between two types of photographs, but would formulate it slightly differently.
-
-Type
-
-What is being documented?
-
-Example
-
-Reproduction photograph
-
-An existing documentary or heritage object
-
-Digital reproduction of a historical photographic print
-
-Documentary photograph
-
-A heritage entity in a particular condition, place or moment
-
-Photograph of the Dēliņi farmhouse in 2025
-
-In the first case, we must distinguish the historical photograph as a work, its physical carrier (such as a photographic print), and its digital reproduction.
-
-In the second case, the new photograph is itself a documentary work that represents the farmhouse.
-
-Both situations may involve a photographic work, digital manifestations, rights, provenance and subsequent scholarly interpretation.
-
-3.  Why give contemporary photographs their own digital twins? This is your most interesting argument, and I think it deserves emphasis.
-
-You are proposing that photographs should not be treated merely as passive attachments to the farmhouse's digital twin. They can be independently identifiable objects of investigation.
-
-For example, a photograph of the farmhouse taken in its original location, a photograph taken after reconstruction in the open-air museum, and a photograph taken during an inspection in 2026 have different documentary contexts.
-
-Each may acquire additional knowledge concerning its date, authorship, depicted structures, historical interpretation, authenticity and rights.
-
-Therefore, maintaining a digital twin of the photographic work has a practical justification: the knowledge about the photograph evolves independently of the knowledge about the farmhouse.
-
-However, there is one terminological issue.
-
-HC1 is specifically a Heritage Entity. It is not simply a general class for any independently identifiable intellectual work.
-
-Your proposal is therefore not merely to maintain digital twins for photographs. It is also to treat contemporary heritage documentation as part of the heritage record, regardless of whether an individual photograph has independently acquired historical significance.
-
-That is a defensible curatorial position, but I would present it explicitly as our proposed interpretation of heritage documentation, rather than as an established requirement of HDT-O or European museum practice.
-
-The historical photographs and the 2025–2026 documentation can then all have HC1/HC2 pairs, but for reasons grounded in their documentary role, not because their heritage significance is necessarily identical.
-
-4.  The separate role of HC7 and HC15 This is where I would be particularly precise.
-
-The HC1/HC2 pair identifies the photographic work as an object of investigation and its evolving digital twin.
-
-The HC7/HC15 dual classification identifies a particular fixed digital manifestation.
-
-This allows one photographic work to have an ORF original, a TIFF preservation copy and several JPEG derivatives, each with its own ISCC identifiers.
-
-The key is that the digital twin is volatile, but the individual file manifestations are persistent. They are not persistent because they belong to the twin; their persistence is a property of their fixed digital content.
-
-HC7 and HC15 describe two independent aspects of that same digital object:
-
-HC7: its role as a digital visual or audiovisual representation.
-
-HC15: its identity as a fixed digital object.
-
-This is a stronger explanation than describing HC15 simply as fixing identity within the digital twin.
-
-5.  Suggested structure for the new section I would call it “Multimodal resources and persistent digital representations” and organise it into four short paragraphs:
-
-Distribution and access: Wikimedia Commons, Europeana, local media and rights-sensitive access.
-
-Photographs as documentary works: reproductions of existing records versus new documentation of heritage entities.
-
-Photographs as objects of investigation: why the photographic works themselves can have HC1/HC2 identities, including contemporary documentation.
-
-Persistent manifestations: HC7/HC15, ORF/JPEG/TIFF files and their ISCC identifiers.
-
-One point I would not claim without qualification is that European museum practice requires contemporary object photographs to be recognised as heritage entities. The stronger, more supportable claim is that our model treats them as integral documentary components of the heritage record, whose independent provenance, rights and evolving interpretation justify their own digital twins.
-
-That gives you a coherent argument without conflating heritage status, documentary identity, digital representation and bit-level persistence.
-
-Pasted text(20261102-155622).txt Document OK, can you please create such a new text, but using our ongoing examples , the oblique and frontal photograph The following section is intended to follow Semantic projection from Wikibase to HDT-O, immediately before the worked example.
 
 ### Multimodal resources and persistent digital representations
 
 The *Finno-Ugric Data Sharing Space* maintains a multimodal heritage knowledge environment in which photographs, sound recordings, videos and other digital resources can be connected to the knowledge graph. Where the relevant rights permit public distribution, we publish media through Wikimedia Commons, and where possible make them available through Europeana, using licences such as [CC BY](https://creativecommons.org/licenses/by/4.0/) or [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/).
 
-[![See on Wikimedia Commons: <https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_oblique_view.jpg>](images/wikimedia/Dēliņi_farmhouse_oblique_view_on_Wikimedia_Commons.png){fig-align="center"}](https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_oblique_view.jpg)
+[![See on Wikimedia Commons: \<https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_oblique_view.jpg\>](images/wikimedia/Dēliņi_farmhouse_oblique_view_on_Wikimedia_Commons.png){fig-align="center"}](https://commons.wikimedia.org/wiki/File:D%C4%93li%C5%86i_farmhouse_oblique_view.jpg)
 
 For resources that cannot be distributed under these conditions, we use the [Wikibase Local Media](https://www.mediawiki.org/wiki/Extension:Wikibase_Local_Media "Wikibase Local Media Extension") extension or provide alternative access arrangements, for example, with some sound recordings on Spotify. Such restrictions may arise from overlapping copyright, neighbouring rights, personality rights, privacy obligations, contractual permissions or ethical considerations that cannot be adequately expressed through a single licence statement.
 
@@ -525,7 +280,6 @@ The dual classification also supports rights-aware governance. The original high
 
 Our approach therefore distinguishes three levels: the photographic work as an independently identifiable subject of investigation, its evolving digital twin (`HC2`), and its persistent digital manifestations (`HC7` and `HC15`). This structure allows the frontal and oblique photographs to serve as evidence in the digital twin of the Dēliņi farmhouse without losing their independent identity, provenance or governance context. Although photographs provide the clearest demonstration, the same distinctions are relevant to sound recordings, musical notation, video and three-dimensional digital representations, where the relationships between intellectual works, digital manifestations and permitted uses may be considerably more complex.
 
-
 # Worked example: projecting operational knowledge into HDT-O
 
 The Dēliņi farmhouse provides an initial demonstration of how independently maintained Wikibase records can be projected into an HDT-O and CIDOC CRM representation. The example distinguishes physical heritage entities, their digital twins, independently identifiable photographic works, fixed digital manifestations and proposition sets. It is intended as a first consultation draft for discussion with ECHOES, rather than a final modelling recommendation or validated interoperability package.
@@ -543,6 +297,10 @@ The intermediate and final examples have been revised to distinguish photographi
 The physical Dēliņi farmhouse and farmstead are distinguished from their operational digital twins. The `HP1` property connects each heritage entity (`HC1`) to its digital twin (`HC2`). The physical farmhouse is also explicitly represented as part of the physical farmstead using the CIDOC CRM property `P46i forms part of`.
 
 ```{text}
+@prefix wd: <https://reprexbase.eu/fu/entity/> .
+@prefix hdt: <https://example.org/hdto/> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
+
 wd:Q7376
     a hdt:HC1, crm:E24_Physical_Human-Made_Thing ;
     hdt:HP1 wd:Q7328 ;
@@ -568,6 +326,11 @@ The frontal and oblique photographs of the Dēliņi farmhouse are independently 
 In the current example, each photographic work is provisionally classified as `HC1 Heritage Entity` and `crm:E36 Visual Item`, while its digital twin is classified as `HC2 Heritage Digital Twin`. This permits us to test the existing HDT-O relationships without introducing an additional ontology class. It does not settle whether every contemporary photographic work used in heritage documentation should itself be recognised as a heritage entity.
 
 ```{text}
+@prefix wd: <https://reprexbase.eu/fu/entity/> .
+@prefix hdt: <https://example.org/hdto/> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix ex: <https://example.org/finfair/> .
+
 ex:frontal-photographic-work
     a hdt:HC1, crm:E36_Visual_Item ;
     hdt:HP1 wd:Q7362 ;
@@ -588,6 +351,10 @@ The photographic works are further distinguished from their digital manifestatio
 For the published JPEGs, our revised projection proposes a dual classification as `HC7 Digital Audiovisual Object` and `HC15 Persistent Digital Object`. These classes describe complementary aspects of the same resource: its character as a digital visual representation and its identity as a digital object with fixed bit-level content. The dual classification is intended to avoid introducing separate resources merely to express these two characteristics.
 
 ```{text}
+@prefix wd: <https://reprexbase.eu/fu/entity/> .
+@prefix hdt: <https://example.org/hdto/> .
+@prefix ex: <https://example.org/finfair/> .
+
 ex:frontal-jpeg
     a hdt:HC7, hdt:HC15 ;
     hdt:HP9 wd:Q7376 .
@@ -622,6 +389,11 @@ The revised RDF examples also illustrate how digital twins can be associated wit
 The farmhouse and the two photographic twins are each associated with a version-labelled proposition set. For the farmhouse, the example includes propositions concerning Livonian heritage attribution and membership of the farmstead. The photographic examples include propositions concerning the published JPEGs and their relationships to the photographic twins.
 
 ```{text}
+@prefix wd: <https://reprexbase.eu/fu/entity/> .
+@prefix hdt: <https://example.org/hdto/> .
+@prefix ex: <https://example.org/finfair/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
 wd:Q7328
     hdt:HP33 ex:delini-building-ps-v1 .
 
@@ -813,17 +585,17 @@ The Dēliņi examples provide a deliberately small initial test case. The correc
 
 For the next stage, we would particularly appreciate:
 
-1. **Authoritative ontology releases.** A versioned, machine-readable HDT-O specification with stable namespace IRIs, class and property definitions, and documented changes between releases.
+1.  **Authoritative ontology releases.** A versioned, machine-readable HDT-O specification with stable namespace IRIs, class and property definitions, and documented changes between releases.
 
-2. **SHACL validation shapes.** Reference shapes describing the structural and semantic constraints expected of HDT-O-compatible RDF exchange, including constraints on `HC7`, `HC15`, `HC16` and their relevant relationships.
+2.  **SHACL validation shapes.** Reference shapes describing the structural and semantic constraints expected of HDT-O-compatible RDF exchange, including constraints on `HC7`, `HC15`, `HC16` and their relevant relationships.
 
-3. **Positive and negative test cases.** Representative examples with expected validation outcomes, including dual-classified digital manifestations, independently maintained photographic twins, proposition sets and provenance.
+3.  **Positive and negative test cases.** Representative examples with expected validation outcomes, including dual-classified digital manifestations, independently maintained photographic twins, proposition sets and provenance.
 
-4. **EARL reporting guidance.** A recommended approach for reporting which interoperability and conformance tests our projection passes or fails.
+4.  **EARL reporting guidance.** A recommended approach for reporting which interoperability and conformance tests our projection passes or fails.
 
-5. **A complete exchange example.** A valid Heritage Digital Twin exchange package illustrating current and historical proposition sets, persistent digital representations, provenance and, where applicable, rights information.
+5.  **A complete exchange example.** A valid Heritage Digital Twin exchange package illustrating current and historical proposition sets, persistent digital representations, provenance and, where applicable, rights information.
 
-6. **A collaborative mapping exercise.** We propose using the Dēliņi farmhouse and its frontal and oblique photographic documentation as a small reference case for jointly testing the projection, identifying ontology gaps and documenting agreed interoperability patterns.
+6.  **A collaborative mapping exercise.** We propose using the Dēliņi farmhouse and its frontal and oblique photographic documentation as a small reference case for jointly testing the projection, identifying ontology gaps and documenting agreed interoperability patterns.
 
 Our immediate objective is not to extend HDT-O wherever existing classes and properties can already express the required meaning. We seek to distinguish requirements that can be met through documented mappings, requirements that need additional implementation conventions, and genuine conceptual gaps that may justify extending the ontology.
 
@@ -841,9 +613,9 @@ The photographs originate as Olympus RAW digital negatives from which TIFF, JPEG
 
 We therefore distinguish three levels:
 
-1. **The represented entity:** a physical heritage object or independently identifiable intellectual work, such as a farmhouse, photograph, musical composition or recorded performance.
-2. **Its Digital Twin (`DT`):** an evolving, governed environment for maintaining and investigating knowledge about that entity, including propositions concerning its identity, interpretation, provenance, rights and permitted uses.
-3. **Its persistent digital manifestations:** particular files, renditions or other digital resources used to inspect, analyse, reproduce or communicate the represented entity, potentially classified as both `HC7` and `HC15` where appropriate.
+1.  **The represented entity:** a physical heritage object or independently identifiable intellectual work, such as a farmhouse, photograph, musical composition or recorded performance.
+2.  **Its Digital Twin (`DT`):** an evolving, governed environment for maintaining and investigating knowledge about that entity, including propositions concerning its identity, interpretation, provenance, rights and permitted uses.
+3.  **Its persistent digital manifestations:** particular files, renditions or other digital resources used to inspect, analyse, reproduce or communicate the represented entity, potentially classified as both `HC7` and `HC15` where appropriate.
 
 For recognised heritage entities, the digital twin can be classified as `HC2 Heritage Digital Twin`. For other cultural works, we propose considering a more general `Digital Twin` class, with `HC2` as its heritage-specific subclass. If a cultural work subsequently acquires recognised heritage significance, its existing twin could receive the more specific classification without changing its identity or reconstructing its knowledge history.
 
