@@ -33,6 +33,7 @@ bibliography:
    - bib/ISOdata.bib
    - bib/eupolicies.bib
    - bib/finnougric.bib
+   - bib/reviewalgebra.bib
    - bib/wikidata.bib
    
 nocite: |
@@ -177,7 +178,7 @@ The Wikibase ontology and Betwixt Vocabulary therefore support applications for 
 
 ### Semantic projection from Wikibase to HDT-O
 
-Wikibase can represent knowledge expressed in HDT-O and CIDOC CRM using its own item-and-property model (see [@pfeiffer_representing_2021; @kesaniemi_wb_cidoc_202]). Ontology classes can be represented as Wikibase items and ontology properties as Wikibase properties. Class hierarchies can be expressed through *subclass of* relationships, while individual resources can be assigned to classes through *instance of* relationships. Wikibase statements can also carry qualifiers and references. However, representing an ontology within Wikibase and exporting an ontology-aligned RDF graph are distinct operations: the latter requires explicit mappings between Wikibase identifiers and the corresponding ontology classes, properties and relationships.
+Wikibase can represent knowledge expressed in HDT-O and CIDOC CRM using its own item-and-property model (see [@pfeiffer_representing_2021; @kesaniemi_wb_cidoc_2022]). Ontology classes can be represented as Wikibase items and ontology properties as Wikibase properties. Class hierarchies can be expressed through *subclass of* relationships, while individual resources can be assigned to classes through *instance of* relationships. Wikibase statements can also carry qualifiers and references. However, representing an ontology within Wikibase and exporting an ontology-aligned RDF graph are distinct operations: the latter requires explicit mappings between Wikibase identifiers and the corresponding ontology classes, properties and relationships.
 
 Our approach distinguishes the *operational representation of heritage knowledge* from its *ontology-aligned exchange representation*. Wikibase allows curators to work with familiar domain-specific classifications and maintain practical descriptions of heritage objects, while documented mappings allow us to project this knowledge into the more explicit conceptual structures of HDT-O and CIDOC CRM[^3]. The operational model does not need to reproduce every ontological distinction as a separately maintained Wikibase item, provided that these distinctions can be reconstructed without ambiguity when required for interoperability.
 
@@ -343,7 +344,7 @@ I would introduce separate HC7 and HC15 resources only if we need to model a dig
 
 So , before we go onto the worked example, I want to put this straight after the following text.
 
-Semantic projection from Wikibase to HDT-O Wikibase can represent knowledge expressed in HDT-O and CIDOC CRM using its own item-and-property model (see [@pfeiffer_representing_2021; @kesaniemi_wb_cidoc_202]). Ontology classes can be represented as Wikibase items and ontology properties as Wikibase properties. Class hierarchies can be expressed through subclass of relationships, while individual resources can be assigned to classes through instance of relationships. Wikibase statements can also carry qualifiers and references. However, representing an ontology within Wikibase and exporting an ontology-aligned RDF graph are distinct operations: the latter requires explicit mappings between Wikibase identifiers and the corresponding ontology classes, properties and relationships.
+Semantic projection from Wikibase to HDT-O Wikibase can represent knowledge expressed in HDT-O and CIDOC CRM using its own item-and-property model (see [@pfeiffer_representing_2021; @kesaniemi_wb_cidoc_2022]). Ontology classes can be represented as Wikibase items and ontology properties as Wikibase properties. Class hierarchies can be expressed through subclass of relationships, while individual resources can be assigned to classes through instance of relationships. Wikibase statements can also carry qualifiers and references. However, representing an ontology within Wikibase and exporting an ontology-aligned RDF graph are distinct operations: the latter requires explicit mappings between Wikibase identifiers and the corresponding ontology classes, properties and relationships.
 
 Our approach distinguishes the operational representation of heritage knowledge from its ontology-aligned exchange representation. Wikibase allows curators to work with familiar domain-specific classifications and maintain practical descriptions of heritage objects, while documented mappings allow us to project this knowledge into the more explicit conceptual structures of HDT-O and CIDOC CRM3. The operational model does not need to reproduce every ontological distinction as a separately maintained Wikibase item, provided that these distinctions can be reconstructed without ambiguity when required for interoperability.
 
@@ -371,7 +372,18 @@ The projection must also account for differences between statements about the op
 
 In the operational representation, this statement is attached to the principal Wikibase item because that item serves as the curator's point of access to the farmhouse description. In an HDT-O-aligned representation, however, the heritage relationship concerns the physical farmhouse (HC1), rather than its digital twin (HC2). The semantic projection therefore attributes the relationship to the corresponding heritage entity while preserving the identity of the operational digital twin:
 
-{text} @prefix wd: \<\> . @prefix hdt: \<\> . @prefix crm: \<\> . wd:Q7376 a hdt:HC1, crm:E24_Physical_Human-Made_Thing ; hdt:HP1 wd:Q7328 ; hdt:HP15 wd:Q46 . wd:Q7328 a hdt:HC2 . wd:Q46 a crm:E74_Group .
+```{text} 
+@prefix wd: \<\> .
+@prefix hdt: \<\> .
+@prefix crm: \<\> .
+wd:Q7376 a hdt:HC1, 
+   crm:E24_Physical_Human-Made_Thing ; 
+   hdt:HP1 wd:Q7328 ; 
+   hdt:HP15 wd:Q46 . 
+   
+wd:Q7328 a hdt:HC2 . wd:Q46 a crm:E74_Group .
+```
+
 
 The hdt: namespace in this illustrative excerpt is a placeholder pending alignment with the authoritative ontology release. The example demonstrates that semantic projection involves more than renaming Wikibase properties. The original statement Q7328 → P480 → Q46 is interpreted as a heritage relationship between the physical farmhouse (Q7376) and the Livonians (Q46), while HP1 explicitly connects the heritage entity to its digital twin. The operational statement is not treated as an erroneous assertion about the digital twin, but as a shorthand whose intended subject can be identified from the modelling context.
 
